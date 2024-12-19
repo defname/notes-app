@@ -23,7 +23,7 @@ export default function AddItemMenu({ parentId }: AddItemMenuProps) {
           <Menu.Label>Neues Item</Menu.Label>
           {
           Notes.supportedTypes().map(type => (
-              <NavLink key={ type.id } href={ `/create/${type.id}${parentIdUrlStr}` } leftSection={ <type.icon style={{ width: rem(14), height: rem(14) }} /> } label={ type.text } />
+              <NavLink key={ type.id } href={ `${import.meta.env.BASE_URL}/create/${type.id}${parentIdUrlStr}` } leftSection={ <type.icon style={{ width: rem(14), height: rem(14) }} /> } label={ type.text } />
           ))
           }
       </Menu.Dropdown>
