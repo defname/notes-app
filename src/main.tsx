@@ -15,12 +15,14 @@ import { Route } from 'react-router'
 import { CreatePage } from './app/CreatePage/CreatePage.tsx'
 import { DisplayPage } from './app/DisplayPage/DisplayPage.tsx'
 
+
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ColorSchemeScript defaultColorScheme='auto' />
     <MantineProvider defaultColorScheme='auto'>
       <Notifications />
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/create/:type" element={<CreatePage />} />
