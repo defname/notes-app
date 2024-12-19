@@ -1,16 +1,20 @@
 
-import { AppShell, Burger, Button, Group } from "@mantine/core"
+import { Affix, AppShell, Burger, FocusTrap, Group, UnstyledButton } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import React from 'react'
+import AddItemMenu from "../components/AddItemMenu"
+import { DBItem } from "../lib/db"
+import { IconChevronCompactLeft, IconChevronCompactRight } from "@tabler/icons-react"
 
 
 type MainLayoutProps = React.PropsWithChildren & {
     aside?: JSX.Element
+    showAddItemMenu: boolean
+    currentItem?: DBItem
 }
 
-export default function MainLayout({ children, aside } : MainLayoutProps) {
+export default function MainLayout({ children, aside, showAddItemMenu, currentItem } : MainLayoutProps) {
   const [ navBarOpened, navBarControl ] = useDisclosure()
-
   const [ asideOpened, asideControl ] = useDisclosure()
 
   return (
@@ -38,7 +42,16 @@ export default function MainLayout({ children, aside } : MainLayoutProps) {
               size="md"
             />
             <div>Logo</div>
-            <Button onClick={asideControl.toggle}>Aside</Button>
+            { aside &&
+              <Affix position={{right: 0, bottom: "50%" }}>
+                <FocusTrap active={false}>
+                <UnstyledButton variant="filled" size="xl" hiddenFrom="sm" onClick={asideControl.toggle}>
+                  { asideOpened ? <IconChevronCompactRight style={{ width: '100%', height: '240%' }} stroke={2.5} /> : <IconChevronCompactLeft style={{ width: '100%', height: '240%' }} stroke={2.5} /> }
+                </UnstyledButton>
+                </FocusTrap>
+              </Affix>
+              
+            }
           </Group>
         </AppShell.Header>
 
@@ -46,6 +59,8 @@ export default function MainLayout({ children, aside } : MainLayoutProps) {
 
         <AppShell.Main>
             { children }
+
+            { showAddItemMenu && <AddItemMenu parentId={currentItem?.id} position={{ bottom: 20, right: 20 }} /> }
         </AppShell.Main>
 
         { aside && <AppShell.Aside p="md">{ aside }</AppShell.Aside> }

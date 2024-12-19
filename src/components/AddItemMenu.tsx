@@ -4,17 +4,28 @@ import { IconPlus } from "@tabler/icons-react"
 import Notes from "../lib/notes"
 import { Link } from "react-router"
 
-interface AddItemMenuProps {
-    parentId?: string
+
+
+interface Position {
+  left?: number|string
+  top?: number|string
+  right?: number|string
+  bottom?: number|string
 }
 
-export default function AddItemMenu({ parentId }: AddItemMenuProps) {
+interface AddItemMenuProps {
+    parentId?: string
+    position: Position
+}
+
+
+export default function AddItemMenu({ parentId, position }: AddItemMenuProps) {
   const parentIdUrlStr = parentId === undefined ? "" : `?parent=${parentId}`
 
   return (
     <Menu shadow="md">
       <Menu.Target>
-          <Affix position={{ bottom: 20, right: 20 }}>
+          <Affix position={position}>
           <ActionIcon variant="filled" size="xl" radius="xl" aria-label="Settings">
               <IconPlus style={{ width: '70%', height: '70%' }} stroke={1.5} />
           </ActionIcon>

@@ -1,8 +1,7 @@
 import { useParams } from "react-router"
 import MainLayout from "../MainLayout"
 import Notes from "../../lib/notes"
-import AddItemMenu from "../../components/AddItemMenu"
-import { Divider, Space, Title } from "@mantine/core"
+import { ScrollArea, Title } from "@mantine/core"
 import NotesList from "../../components/NotesList"
 import { useItem, useRelatedItems } from "../../hooks/data"
 
@@ -11,15 +10,12 @@ function Aside() {
     const { id } = useParams()
     const relItems = useRelatedItems(id)
 
-    return (<>{
+    return (<ScrollArea>{
         relItems.length > 0 && (<>
-            <Space h="lg" />
-            <Divider />
-            <Space h="md" />
             <Title order={3}>Verknüpfte Notizen</Title>
             <NotesList notes={relItems} />
         </>)
-    }</>)
+    }</ScrollArea>)
 }
 
 export function DisplayPage() {
@@ -29,9 +25,8 @@ export function DisplayPage() {
     if (id === undefined) return
 
     return (
-        <MainLayout aside={<Aside />}>
+        <MainLayout aside={<Aside />} showAddItemMenu={true} currentItem={item}>
             <Notes.Render item={item} />
-            <AddItemMenu parentId={id}/>
         </MainLayout>
     )
 }
