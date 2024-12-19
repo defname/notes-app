@@ -57,7 +57,7 @@ export function CreatePage() {
 
 
   return (
-    <MainLayout>
+    <MainLayout showAddItemMenu={false}>
       <Notes.RenderEditor item={ item } onChange={(item: ItemType<any>) => item && setItem(item)}/>
       <Affix hidden={ !itemIsValid } position={{ bottom: 20, right: 20 }}>
         <SaveButton onClick={ saveItemToDb }>Speichern</SaveButton>
