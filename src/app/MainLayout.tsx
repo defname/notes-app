@@ -10,6 +10,7 @@ type MainLayoutProps = React.PropsWithChildren & {
 
 export default function MainLayout({ children, aside } : MainLayoutProps) {
   const [ navBarOpened, navBarControl ] = useDisclosure()
+  // @ts-ignore
   const [ asideOpened, asideControl ] = useDisclosure()
 
   return (
