@@ -1,5 +1,5 @@
 
-import { AppShell, Burger, Group } from "@mantine/core"
+import { AppShell, Burger, Button, Group } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import React from 'react'
 
@@ -12,7 +12,6 @@ export default function MainLayout({ children, aside } : MainLayoutProps) {
   const [ navBarOpened, navBarControl ] = useDisclosure()
 
   const [ asideOpened, asideControl ] = useDisclosure()
-  asideControl.toggle()
 
   return (
       <AppShell
@@ -39,6 +38,7 @@ export default function MainLayout({ children, aside } : MainLayoutProps) {
               size="md"
             />
             <div>Logo</div>
+            <Button onClick={asideControl.toggle}>Aside</Button>
           </Group>
         </AppShell.Header>
 
