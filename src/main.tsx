@@ -21,7 +21,6 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ColorSchemeScript defaultColorScheme='auto' />
     <MantineProvider defaultColorScheme='auto'>
-      <p>{import.meta.env.BASE_URL}</p>
       <Notifications />
       <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Routes>
