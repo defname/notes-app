@@ -15,7 +15,7 @@ function Aside() {
     return (<ScrollArea>{
         relItems.length > 0 && (<>
             <Title order={3}>Verknüpfte Notizen</Title>
-            <NotesList notes={relItems} />
+            <NotesList notes={relItems} parentId={id} />
         </>)
     }</ScrollArea>)
 }
