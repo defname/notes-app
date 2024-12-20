@@ -1,7 +1,7 @@
 import type { NotePluginProps, NoteEditorPluginProps, ItemType } from "../notes"
 import { NotePlugin } from "../notes"
 import { IconCategory } from "@tabler/icons-react"
-import { Autocomplete, Text, Title } from "@mantine/core"
+import { Autocomplete, Text, TextInput, Title } from "@mantine/core"
 import db, { DBItem } from "../../db"
 import { useState } from "react"
 
@@ -33,8 +33,9 @@ const CategoryPlugin: NotePlugin<ContentType> = {
         </>)
     },
 
-    RenderEditor: ({ item, onChange, create } : NoteEditorPluginProps<ContentType>) => {
+    RenderEditor: ({ item, onChange, create, parentId } : NoteEditorPluginProps<ContentType>) => {
         const [allCategories, setAllCategories] = useState<DBItem[]>([])
+        const [error, setError] = useState<string|boolean>(false)
         
         function onContentChange(content: ContentType) {
             const duplicate = allCategories.find(it => it.content.title === content.title)
@@ -49,19 +50,38 @@ const CategoryPlugin: NotePlugin<ContentType> = {
         async function updateAllCategories() {
             const cats = await queryAllCateories()
             setAllCategories(cats)
-            console.log(cats)
+        }
+
+        async function onBlur() {
+            if (item.content.title === "") {
+                setError(true)
+                return
+            }
+            console.log(allCategories)
+            if (allCategories.find(duplicate => duplicate.content.title === item.content.title) !== undefined) {
+                setError("Es existiert schon eine Kategorie mit dem Namen.")
+                return
+            }
+            setError(false)
         }
 
         return (<>{
-            create ? <Autocomplete
+            create && parentId ? <Autocomplete
                 label="Name"
-                error={item.content.title === ""}
+                error={ item.content.title === "" }
                 value={ item.content.title }
-                data={allCategories.map(item => item.content.title)}
-                onFocus={updateAllCategories}
-                onChange={inputStr => onContentChange({...item.content, title: inputStr})}
+                data={ allCategories.map(item => item.content.title) }
+                onFocus={ updateAllCategories }
+                onChange={ inputStr => onContentChange({...item.content, title: inputStr}) }
             />
-            : <></>
+            : <TextInput
+                label="Name"
+                error={ error }
+                value={ item.content.title }
+                onFocus={ updateAllCategories }
+                onBlur={ onBlur }
+                onChange={ ev => onContentChange({...item.content, title: ev.target.value}) }
+            />
         }</>)
     },
 

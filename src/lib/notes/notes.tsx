@@ -23,6 +23,7 @@ export interface NotePluginProps<ContentType> {
 export type NoteEditorPluginProps<ContentType> = NotePluginProps<ContentType> & {
     onChange: (content: ItemType<ContentType>|DBItem) => void
     create?: boolean
+    parentId?: string
 }
 
 type ItemOptional<Type extends {item: any}> = Omit<Type, "item"> & Partial<Pick<Type, "item">>

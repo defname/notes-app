@@ -49,7 +49,14 @@ export function CreatePage() {
 
     /* Check if the returned item already exists (in this case it has an id) and if so
      * just create a relation between the parent item and the returned item */
-    if (Object.hasOwn(newItem, "id") && (newItem as DBItem).id! !== undefined && parentId !== null) {
+    if (Object.hasOwn(newItem, "id") && (newItem as DBItem).id! !== undefined) {
+      if (parentId == null) {
+        notifications.show({
+          title: "Fehler",
+          message: "Die Notiz existiert bereits."
+        })
+        return
+      }
       const existingItemId = (newItem as DBItem).id
       if (await checkForRelation(parentId, existingItemId)) {
         notifications.show({
