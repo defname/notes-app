@@ -1,11 +1,36 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { VitePWA } from 'vite-plugin-pwa'
 
-const BASE_DIR = process.env.BASE_DIR || ''
+const BASE_DIR = (process.env.BASE_DIR === "" || process.env.BASE_DIR === "/./") ? "" : process.env.BASE_DIR
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['favicon.ico', 'notes.png', 'notes.svg', "web-app-manifest-192x192.png", "web-app-manifest-512x512.png"],
+      manifest: {
+        name: 'Notes App',
+        short_name: 'Notes',
+        description: 'An app for managing notes and relations between them.',
+        theme_color: '#ffffff',
+        background_color: '#ffffff',
+        icons: [
+          {
+            src: 'web-app-manifest-192x192.png',
+            sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: 'web-app-manifest-512x512.png',
+            sizes: '512x512',
+            type: 'image/png'
+          }
+        ]
+      }
+    })],
   resolve: {
     alias: {
       // /esm/icons/index.mjs only exports the icons statically, so no separate chunks are created
