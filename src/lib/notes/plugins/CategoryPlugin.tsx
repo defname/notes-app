@@ -1,16 +1,20 @@
 import type { NotePluginProps, NoteEditorPluginProps, ItemType } from "../notes"
 import { NotePlugin } from "../notes"
 import { IconCategory } from "@tabler/icons-react"
-import { Text, TextInput, Title } from "@mantine/core"
-import db from "../../db"
+import { Autocomplete, Text, Title } from "@mantine/core"
+import db, { DBItem } from "../../db"
 import { useState } from "react"
 
 interface ContentType {
     title: string
 }
 
-async function queryForDuplicates(title: string): Promise<boolean> {
-    return db.items.where('type').equals("category").and(item => item.content.title === title).toArray().then(items => items.length > 0)
+async function queryForDuplicate(title: string): Promise<DBItem|undefined> {
+    return db.items.where('type').equals("category").and(item => item.content.title === title).toArray().then(items => items.length > 0 ? items[0] : undefined)
+}
+
+async function queryAllCateories(): Promise<DBItem[]> {
+    return db.items.where('type').equals("category").toArray()
 }
 
 
@@ -29,21 +33,41 @@ const CategoryPlugin: NotePlugin<ContentType> = {
         </>)
     },
 
-    RenderEditor: ({ item, onChange } : NoteEditorPluginProps<ContentType>) => {
-        const [duplicates, setDuplicates] = useState(false)
+    RenderEditor: ({ item, onChange, create } : NoteEditorPluginProps<ContentType>) => {
+        const [allCategories, setAllCategories] = useState<DBItem[]>([])
+        
         function onContentChange(content: ContentType) {
-            onChange({...item, content: content})
+            const duplicate = allCategories.find(it => it.content.title === content.title)
+            if (duplicate) {
+                onChange(duplicate)
+            }
+            else {
+                onChange({...item, content: content})
+            }
         }
-        async function onBlur() {
-            setDuplicates(await queryForDuplicates(item.content.title))
+
+        async function updateAllCategories() {
+            const cats = await queryAllCateories()
+            setAllCategories(cats)
+            console.log(cats)
         }
-        return (<>
-            <TextInput label="Name" error={item.content.title === "" || (duplicates && "Eine Kategorie mit dem Namen existiert bereits.")} placeholder="" value={ item.content.title } onBlur={onBlur} onChange={ev => onContentChange({...item.content, title: ev.target.value})} />
-        </>)
+
+        return (<>{
+            create ? <Autocomplete
+                label="Name"
+                error={item.content.title === ""}
+                value={ item.content.title }
+                data={allCategories.map(item => item.content.title)}
+                onFocus={updateAllCategories}
+                onChange={inputStr => onContentChange({...item.content, title: inputStr})}
+            />
+            : <></>
+        }</>)
     },
 
     validateContent: async (item: ItemType<ContentType>) => {
-        if (item.content.title === "" || await queryForDuplicates(item.content.title)) return false
+        const duplicate = await queryForDuplicate(item.content.title)
+        if (item.content.title === "" || (duplicate !== undefined && duplicate.id === undefined)) return false
         return true
     },
     

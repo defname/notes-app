@@ -7,6 +7,7 @@ import { TablerIcon } from "@tabler/icons-react"
 import React from "react"
 
 import { modules } from "./notes.config"
+import { DBItem } from "../db"
 
 
 export interface ItemType<ContentType=any> {
@@ -20,7 +21,8 @@ export interface NotePluginProps<ContentType> {
 }
 
 export type NoteEditorPluginProps<ContentType> = NotePluginProps<ContentType> & {
-    onChange: (content: ItemType<ContentType>) => void
+    onChange: (content: ItemType<ContentType>|DBItem) => void
+    create?: boolean
 }
 
 type ItemOptional<Type extends {item: any}> = Omit<Type, "item"> & Partial<Pick<Type, "item">>
@@ -91,12 +93,12 @@ class _Notes {
         return this.plugins[item.type].RenderInline({ item, ...props })
     }
 
-    RenderEditor({ item, onChange, ...props }: NoteEditorPublicPluginProps<any>) {
+    RenderEditor({ item, onChange, create, ...props }: NoteEditorPublicPluginProps<any>) {
         if (!item) return <Loader />
         if (!Object.hasOwn(this.plugins, item.type)) {
             return this._fallback({ item })
         }
-        return this.plugins[item.type].RenderEditor({ item, onChange, ...props })
+        return this.plugins[item.type].RenderEditor({ item, onChange, create, ...props })
     }
 
     supportedTypes() : TypeDescription<any>[] {
