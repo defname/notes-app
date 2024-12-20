@@ -21,8 +21,14 @@ export interface NotePluginProps<ContentType> {
 }
 
 export type NoteEditorPluginProps<ContentType> = NotePluginProps<ContentType> & {
-    onChange: (content: ItemType<ContentType>|DBItem) => void
+    /* callback to update the item.
+     * item might be of type ItemType (without an id) or of type DBItem (with an id).
+     * If item has no id it should be an new object, if it has an id it is an
+     * existing object. */
+    onChange: (item: ItemType<ContentType>|DBItem) => void
+    /* is the component rendered to create a new item or to edit an existing one */
     create?: boolean
+    /* id of the parent item */
     parentId?: string
 }
 
@@ -46,7 +52,7 @@ export interface NotePlugin<ContentType> {
     RenderEditor: React.FC<NoteEditorPluginProps<ContentType>>
 
     /* validator to check new item before it is written into the db */
-    validateContent: (item: ItemType<ContentType>) => Promise<boolean>
+    validateContent: (item: ItemType<ContentType>|DBItem) => Promise<boolean>
     /* used to filter a list of items */
     match: (item: ItemType<ContentType>, searchString: string) => boolean
 }
@@ -113,7 +119,7 @@ class _Notes {
         return this.plugins[type].forType
     }
 
-    async validateContent(item: ItemType<any>|undefined): Promise<boolean> {
+    async validateContent(item: ItemType<any>|DBItem|undefined): Promise<boolean> {
         if (!item || !Object.hasOwn(this.plugins, item.type)) {
             return false
         }

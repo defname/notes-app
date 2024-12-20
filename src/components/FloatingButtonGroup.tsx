@@ -30,7 +30,7 @@ export default function FloatingButtonGroup({ currentItem, onEditClicked, onDele
         <Affix position={{ bottom: 20, right: 20 }}>
             <Stack align="center">
                 { onDeleteClicked && currentItem &&
-                    <ActionIcon onClick={onDeleteClickedHandler} onBlur={onDeleteBlur} color={askForDeletion ? "red" : undefined} variant="filled" size="input-md" radius="xl" aria-label="Settings">
+                    <ActionIcon onClick={onDeleteClickedHandler} onBlur={onDeleteBlur} color={askForDeletion ? "red" : undefined} variant="filled" size="input-md" radius="xl">
                         { !askForDeletion
                             ? <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
                             : <IconQuestionMark style={{ width: '70%', height: '70%' }} stroke={1.5} />
@@ -38,11 +38,11 @@ export default function FloatingButtonGroup({ currentItem, onEditClicked, onDele
                     </ActionIcon>
                 }
                 { onEditClicked && currentItem &&
-                    <ActionIcon variant="filled" size="input-md" radius="xl" aria-label="Settings">
+                    <ActionIcon variant="filled" size="input-md" radius="xl" onClick={ onEditClicked }>
                         <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
                     </ActionIcon>
                 }
-                <AddItemMenu parentId={ currentItem?.id } position={{ bottom: 20, right: 20 }} />
+                <AddItemMenu parentId={ currentItem?.id } />
             </Stack>
         </Affix>
         

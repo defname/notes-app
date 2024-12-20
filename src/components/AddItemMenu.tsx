@@ -15,21 +15,18 @@ interface Position {
 
 interface AddItemMenuProps {
     parentId?: string
-    position: Position
 }
 
 
-export default function AddItemMenu({ parentId, position }: AddItemMenuProps) {
+export default function AddItemMenu({ parentId }: AddItemMenuProps) {
   const parentIdUrlStr = parentId === undefined ? "" : `?parent=${parentId}`
 
   return (
     <Menu shadow="md">
       <Menu.Target>
-          
             <ActionIcon variant="filled" size="input-xl" radius="xl" aria-label="Settings">
                 <IconPlus style={{ width: '70%', height: '70%' }} stroke={1.5} />
             </ActionIcon>
-          
       </Menu.Target>
       <Menu.Dropdown>
           <Menu.Label>Neues Item</Menu.Label>

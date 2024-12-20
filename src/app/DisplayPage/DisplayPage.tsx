@@ -6,7 +6,6 @@ import NotesList from "../../components/NotesList"
 import { useItem, useRelatedItems } from "../../hooks/data"
 import db from "../../lib/db"
 import { notifications } from "@mantine/notifications"
-import { useState } from "react"
 
 
 function Aside() {
@@ -25,7 +24,6 @@ export function DisplayPage() {
     const { id } = useParams()
     const item = useItem(id)
     const navigate = useNavigate()
-    const [edit, setEdit] = useState(false)
     
     if (id === undefined) return
 
@@ -55,9 +53,10 @@ export function DisplayPage() {
             console.warn("No id to edit")
             return
         }
-        
-        setEdit(true)
+
+        navigate(`/edit/${id}`)
     }
+
 
     return (
         <MainLayout aside={<Aside />} showFloatingButtons={ true } currentItem={ item } onDeleteClicked={ onDeleteClickedHandler } onEditClicked={ onEditClickedHandler }>

@@ -7,7 +7,6 @@ import Notes from '../../lib/notes'
 import SaveButton from '../../components/SaveButton'
 import db, { DBItem } from '../../lib/db'
 import { notifications } from '@mantine/notifications'
-import { Affix } from '@mantine/core'
 import { useItemIsValid } from '../../hooks/data'
 
 
@@ -16,6 +15,50 @@ async function checkForRelation(id1: string, id2: string): Promise<string|undefi
     .then(relations => relations.length === 0 ? undefined : relations[0].id)
 }
 
+async function saveItemToDb(newItem: ItemType<any>|undefined, parentId: string|null, notify: (msg: string) => void): Promise<string>  {
+  if (!newItem) throw "Kein Item zum Speichern vorhanden."
+
+  /* validate the new item
+   * the plugin's RenderEditor method is in charge of showing hints what exactly
+   * is not ok */
+  if (!await Notes.validateContent(newItem)) {
+    throw "Die Angaben sind nicht vollständig oder nicht korrekt."
+  }
+
+
+  /* Check if the returned item already exists (in this case it has an id) and if so
+   * just create a relation between the parent item and the returned item */
+  if (Object.hasOwn(newItem, "id") && (newItem as DBItem).id! !== undefined) {
+    console.log("Item already exists")
+    if (parentId === null) {
+      throw "Die Notiz existiert bereits."
+    }
+
+    if (parentId === (newItem as DBItem).id) {
+      throw "Eine Notiz kann nicht mit sich selbst verknüpft werden."
+    }
+    const existingItemId = (newItem as DBItem).id
+    if (await checkForRelation(parentId, existingItemId)) {
+      notify("Die Verbindung existiert bereits.")
+      return existingItemId
+    }
+    return db.relations.add({item1: existingItemId, item2: parentId})
+          .then(() => existingItemId)
+  }
+
+  /* If the item is actually a new one add it to the database and create a relation
+   * to the parent item, if a parent item is specified */
+  return db.items.add(newItem)
+    .then(newId => {
+      if (parentId !== null) {
+        return db.relations.add({item1: newId, item2: parentId})
+          .then(() => newId)
+      }
+      else {
+        return newId
+      }
+    })
+}
 
 export function CreatePage() {
 
@@ -33,77 +76,26 @@ export function CreatePage() {
     setNewItem({ type: type, content: typeDescr.defaultContent })
   }, [type])
 
-  async function saveItemToDb() {
-    if (!newItem) return
-
-    /* validate the new item
-     * the plugin's RenderEditor method is in charge of showing hints what exactly
-     * is not ok */
-    if (!await Notes.validateContent(newItem)) {
-      notifications.show({
-        title: "Fehler",
-        message: "Die Angaben haben nicht das benötigte Format"
-      })
-      return
-    }
-
-    /* Check if the returned item already exists (in this case it has an id) and if so
-     * just create a relation between the parent item and the returned item */
-    if (Object.hasOwn(newItem, "id") && (newItem as DBItem).id! !== undefined) {
-      if (parentId == null) {
-        notifications.show({
-          title: "Fehler",
-          message: "Die Notiz existiert bereits."
-        })
-        return
+  function saveButtonHandler() {
+    if (newItem === undefined) return
+    const result = saveItemToDb(
+      newItem,
+      parentId,
+      (msg: string) => notifications.show({ title: "Hinweis", message: msg })
+    )
+    
+    result.then(newId => navigate(`/item/${newId}`))
+    .catch(err => {
+      console.warn(err)
+      notifications.show({ title: "Fehler", message: err })
       }
-      const existingItemId = (newItem as DBItem).id
-      if (await checkForRelation(parentId, existingItemId)) {
-        notifications.show({
-          title: "Hinweis",
-          message: "Die Verbindung existiert bereits."
-        })
-        navigate(`/item/${existingItemId}`)
-        return
-      }
-      db.relations.add({item1: existingItemId, item2: parentId})
-            .then(() => navigate(`/item/${existingItemId}`))
-            .catch(reason => {
-              notifications.show({
-                title: "Fehler",
-                message: reason
-              })
-            })
-      return
-    }
-
-    /* If the item is actually a new one add it to the database and create a relation
-     * to the parent item, if a parent item is specified */
-    db.items.add(newItem)
-      .then(newId => {
-        if (parentId !== null) {
-          db.relations.add({item1: newId, item2: parentId})
-            .then(() => navigate(`/item/${newId}`))
-        }
-        else {
-          navigate(`/item/${newId}`)
-        }
-      })
-      .catch(reason => {
-        notifications.show({
-          title: "Fehler",
-          message: reason
-        })
-      })
+    )
   }
-
 
   return (
     <MainLayout showFloatingButtons={false}>
-      <Notes.RenderEditor item={ newItem } onChange={(item: ItemType<any>) => item && setNewItem(item)} create />
-      <Affix hidden={ !itemIsValid } position={{ bottom: 20, right: 20 }}>
-        <SaveButton onClick={ saveItemToDb }>Speichern</SaveButton>
-      </Affix>
+      <Notes.RenderEditor item={ newItem } onChange={(item: ItemType<any>) => item && setNewItem(item)} parentId={parentId} create />
+      <SaveButton onClick={ saveButtonHandler } hidden={ !itemIsValid } />
     </MainLayout>
   )
 }

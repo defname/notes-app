@@ -1,16 +1,12 @@
 import type { NotePluginProps, NoteEditorPluginProps, ItemType } from "../notes"
 import { NotePlugin } from "../notes"
 import { IconCategory } from "@tabler/icons-react"
-import { Autocomplete, Text, TextInput, Title } from "@mantine/core"
+import { Autocomplete, FocusTrap, Text, TextInput, Title } from "@mantine/core"
 import db, { DBItem } from "../../db"
 import { useState } from "react"
 
 interface ContentType {
     title: string
-}
-
-async function queryForDuplicate(title: string): Promise<DBItem|undefined> {
-    return db.items.where('type').equals("category").and(item => item.content.title === title).toArray().then(items => items.length > 0 ? items[0] : undefined)
 }
 
 async function queryAllCateories(): Promise<DBItem[]> {
@@ -38,12 +34,14 @@ const CategoryPlugin: NotePlugin<ContentType> = {
         const [error, setError] = useState<string|boolean>(false)
         
         function onContentChange(content: ContentType) {
+            if (!create) return onChange({...item, content: content})
+
             const duplicate = allCategories.find(it => it.content.title === content.title)
             if (duplicate) {
                 onChange(duplicate)
             }
             else {
-                onChange({...item, content: content})
+                onChange({...item, content: content, id: undefined})
             }
         }
 
@@ -65,7 +63,7 @@ const CategoryPlugin: NotePlugin<ContentType> = {
             setError(false)
         }
 
-        return (<>{
+        return (<FocusTrap active={true}>{
             create && parentId ? <Autocomplete
                 label="Name"
                 error={ item.content.title === "" }
@@ -82,13 +80,15 @@ const CategoryPlugin: NotePlugin<ContentType> = {
                 onBlur={ onBlur }
                 onChange={ ev => onContentChange({...item.content, title: ev.target.value}) }
             />
-        }</>)
+        }
+        </FocusTrap>)
     },
 
-    validateContent: async (item: ItemType<ContentType>) => {
-        const duplicate = await queryForDuplicate(item.content.title)
-        if (item.content.title === "" || (duplicate !== undefined && duplicate.id === undefined)) return false
-        return true
+    validateContent: async (item: ItemType<ContentType>|DBItem|undefined) => {
+        if (!item) return false
+        if (!Object.hasOwn(item, "id")) return item.content.title !== ""
+        const allCategories = await queryAllCateories()
+        return allCategories.find(duplicate => duplicate.content.title === item.content.title) === undefined && item.content.title !== ""
     },
     
     match: (item: ItemType<ContentType>, searchStr: string) => {
