@@ -7,7 +7,7 @@ export function LandingPage() {
   const allItems = useAllItems()
 
   return (
-    <MainLayout showAddItemMenu={true}>
+    <MainLayout showFloatingButtons={true}>
       <NotesList notes={ allItems } />
     </MainLayout>
   )

@@ -25,11 +25,11 @@ export default function AddItemMenu({ parentId, position }: AddItemMenuProps) {
   return (
     <Menu shadow="md">
       <Menu.Target>
-          <Affix position={position}>
-          <ActionIcon variant="filled" size="xl" radius="xl" aria-label="Settings">
-              <IconPlus style={{ width: '70%', height: '70%' }} stroke={1.5} />
-          </ActionIcon>
-          </Affix>
+          
+            <ActionIcon variant="filled" size="input-xl" radius="xl" aria-label="Settings">
+                <IconPlus style={{ width: '70%', height: '70%' }} stroke={1.5} />
+            </ActionIcon>
+          
       </Menu.Target>
       <Menu.Dropdown>
           <Menu.Label>Neues Item</Menu.Label>
