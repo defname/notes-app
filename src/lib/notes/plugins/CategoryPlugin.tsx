@@ -4,18 +4,16 @@ import { IconCategory } from "@tabler/icons-react"
 import { Text, TextInput, Title } from "@mantine/core"
 import { useLiveQuery } from "dexie-react-hooks"
 import db from "../../db"
+import { useState } from "react"
 
 interface ContentType {
     title: string
 }
 
-function queryForDuplicates(title: string) {
+async function queryForDuplicates(title: string): Promise<boolean> {
     return db.items.where('type').equals("category").and(item => item.content.title === title).toArray().then(items => items.length > 0)
 }
 
-function useCheckForDuplicates(title: string) {
-    return useLiveQuery(() => queryForDuplicates(title), [title], false)
-}
 
 const CategoryPlugin: NotePlugin<ContentType> = {
     forType: { id: "category", text: "Kategorie", icon: IconCategory, defaultContent: { title: "" } },
@@ -33,12 +31,15 @@ const CategoryPlugin: NotePlugin<ContentType> = {
     },
 
     RenderEditor: ({ item, onChange } : NoteEditorPluginProps<ContentType>) => {
-        const duplicates = useCheckForDuplicates(item.content.title)
+        const [duplicates, setDuplicates] = useState(false)
         function onContentChange(content: ContentType) {
             onChange({...item, content: content})
         }
+        async function onBlur() {
+            setDuplicates(await queryForDuplicates(item.content.title))
+        }
         return (<>
-            <TextInput label="Name" error={item.content.title === "" || (duplicates && "Eine Kategorie mit dem Namen existiert bereits.")} placeholder="" value={ item.content.title } onChange={ev => onContentChange({...item.content, title: ev.target.value})} />
+            <TextInput label="Name" error={item.content.title === "" || (duplicates && "Eine Kategorie mit dem Namen existiert bereits.")} placeholder="" value={ item.content.title } onBlur={onBlur} onChange={ev => onContentChange({...item.content, title: ev.target.value})} />
         </>)
     },
 
