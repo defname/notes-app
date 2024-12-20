@@ -88,7 +88,8 @@ const CategoryPlugin: NotePlugin<ContentType> = {
         if (!item) return false
         if (!Object.hasOwn(item, "id")) return item.content.title !== ""
         const allCategories = await queryAllCateories()
-        return allCategories.find(duplicate => duplicate.content.title === item.content.title) === undefined && item.content.title !== ""
+        const duplicate = allCategories.find(duplicate => duplicate.content.title === item.content.title)
+        return (duplicate === undefined || duplicate.id === (item as DBItem).id) && item.content.title !== ""
     },
     
     match: (item: ItemType<ContentType>, searchStr: string) => {
