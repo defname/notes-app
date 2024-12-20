@@ -1,17 +1,9 @@
-import { ActionIcon, Affix, Menu, rem } from "@mantine/core"
+import { ActionIcon, Menu, rem } from "@mantine/core"
 import { IconPlus } from "@tabler/icons-react"
 
 import Notes from "../lib/notes"
 import { Link } from "react-router"
 
-
-
-interface Position {
-  left?: number|string
-  top?: number|string
-  right?: number|string
-  bottom?: number|string
-}
 
 interface AddItemMenuProps {
     parentId?: string
