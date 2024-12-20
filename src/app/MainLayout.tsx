@@ -6,6 +6,7 @@ import { DBItem } from "../lib/db"
 import { IconChevronCompactLeft, IconChevronCompactRight } from "@tabler/icons-react"
 import FloatingButtonGroup from "../components/FloatingButtonGroup"
 import { Link, useLocation } from "react-router"
+import { useSwipeable } from "react-swipeable"
 import Navbar from "../components/Navbar"
 
 
@@ -22,6 +23,11 @@ export default function MainLayout({ children, aside, showFloatingButtons, curre
   const [ navBarOpened, navBarControl ] = useDisclosure()
   const [ asideOpened, asideControl ] = useDisclosure()
   const location = useLocation()
+  const swipeHandlers = useSwipeable({
+    onSwipedRight: () => asideOpened ? asideControl.close() : navBarControl.open(),
+    onSwipedLeft: () => navBarOpened ? navBarControl.close() : asideControl.open(),
+    preventScrollOnSwipe: true
+  })
 
   useEffect(() => {
     asideControl.close()
@@ -30,6 +36,7 @@ export default function MainLayout({ children, aside, showFloatingButtons, curre
 
   return (
       <AppShell
+        { ...swipeHandlers }
         header={{ height: 60 }}
         navbar={{
           width: 300,
