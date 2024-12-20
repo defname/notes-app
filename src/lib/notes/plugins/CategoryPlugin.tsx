@@ -2,7 +2,6 @@ import type { NotePluginProps, NoteEditorPluginProps, ItemType } from "../notes"
 import { NotePlugin } from "../notes"
 import { IconCategory } from "@tabler/icons-react"
 import { Text, TextInput, Title } from "@mantine/core"
-import { useLiveQuery } from "dexie-react-hooks"
 import db from "../../db"
 import { useState } from "react"
 
