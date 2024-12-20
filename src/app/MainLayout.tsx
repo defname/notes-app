@@ -1,5 +1,5 @@
 
-import { Affix, AppShell, Burger, FocusTrap, Group, SimpleGrid, UnstyledButton } from "@mantine/core"
+import { Affix, AppShell, Burger, FocusTrap, Group, SimpleGrid, Title, UnstyledButton } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import React, { useEffect } from 'react'
 import { DBItem } from "../lib/db"
@@ -60,7 +60,9 @@ export default function MainLayout({ children, aside, showFloatingButtons, curre
                 hiddenFrom="md"
                 size="md"
               />
-              <Link to="/">Notes</Link>
+              <Link to="/">
+                <Title order={2}>Notes</Title>
+              </Link>
             </Group>
             <Group justify="flex-end">
               { aside &&

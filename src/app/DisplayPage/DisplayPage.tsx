@@ -12,9 +12,8 @@ function Aside() {
     const { id } = useParams()
     const relItems = useRelatedItems(id)
 
-    return (<ScrollArea>{
+    return (<ScrollArea><Title order={3}>Verknüpfte Notizen</Title>{
         relItems.length > 0 && (<>
-            <Title order={3}>Verknüpfte Notizen</Title>
             <NotesList notes={relItems} parentId={id} />
         </>)
     }</ScrollArea>)
