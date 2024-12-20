@@ -48,6 +48,7 @@ export interface NotePlugin<ContentType> {
     forType: TypeDescription<ContentType>
     
     Render: React.FC<NotePluginProps<ContentType>>
+    RenderSmall: React.FC<NotePluginProps<ContentType>>
     RenderInline: React.FC<NotePluginProps<ContentType>>
     RenderEditor: React.FC<NoteEditorPluginProps<ContentType>>
 
@@ -70,6 +71,7 @@ class _Notes {
         }
 
         this.Render = this.Render.bind(this)
+        this.RenderSmall = this.RenderSmall.bind(this)
         this.RenderInline = this.RenderInline.bind(this)
         this.RenderEditor = this.RenderEditor.bind(this)
     }
@@ -90,6 +92,14 @@ class _Notes {
             return this._fallback({ item })
         }
         return this.plugins[item.type].Render({ item, ...props })
+    }
+
+    RenderSmall({ item, ...props }: NotePublicPluginProps<any>) {
+        if (!item) return <Loader />
+        if (!Object.hasOwn(this.plugins, item.type)) {
+            return this._fallback({ item })
+        }
+        return this.plugins[item.type].RenderSmall({ item, ...props })
     }
 
     RenderInline({ item, ...props }: NotePublicPluginProps<any>) {

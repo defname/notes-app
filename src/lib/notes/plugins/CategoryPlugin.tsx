@@ -23,10 +23,14 @@ const CategoryPlugin: NotePlugin<ContentType> = {
         </>)
     },
 
-    RenderInline: ({ item }: NotePluginProps<ContentType>) => {
+    RenderSmall: ({ item }: NotePluginProps<ContentType>) => {
         return (<>
             <Text>Kategorie: <Text span fw="bold">{ item.content.title }</Text></Text>
         </>)
+    },
+
+    RenderInline: ({ item }: NotePluginProps<ContentType>) => {
+        return <>{ item.content.title }</>
     },
 
     RenderEditor: ({ item, onChange, create, parentId } : NoteEditorPluginProps<ContentType>) => {

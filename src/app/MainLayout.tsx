@@ -5,7 +5,8 @@ import React, { useEffect } from 'react'
 import { DBItem } from "../lib/db"
 import { IconChevronCompactLeft, IconChevronCompactRight } from "@tabler/icons-react"
 import FloatingButtonGroup from "../components/FloatingButtonGroup"
-import { useLocation } from "react-router"
+import { Link, useLocation } from "react-router"
+import Navbar from "../components/Navbar"
 
 
 type MainLayoutProps = React.PropsWithChildren & {
@@ -52,7 +53,7 @@ export default function MainLayout({ children, aside, showFloatingButtons, curre
                 hiddenFrom="md"
                 size="md"
               />
-              <div>Logo</div>
+              <Link to="/">Notes</Link>
             </Group>
             <Group justify="flex-end">
               { aside &&
@@ -69,7 +70,9 @@ export default function MainLayout({ children, aside, showFloatingButtons, curre
           </SimpleGrid>
         </AppShell.Header>
 
-        <AppShell.Navbar p="md" zIndex={1000}>Navbar</AppShell.Navbar>
+        <AppShell.Navbar p="md" zIndex={1000}>
+          <Navbar />
+        </AppShell.Navbar>
 
         <AppShell.Main>
             { children }

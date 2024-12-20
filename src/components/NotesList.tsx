@@ -40,7 +40,7 @@ export default function NotesList({ notes, parentId }: NotesListProps) {
                             <IconX style={{ width: '70%', height: '70%' }} stroke={1.5} />
                         </ActionIcon>
                     }
-                    <Notes.RenderInline item={ note } />
+                    <Notes.RenderSmall item={ note } />
                     <Link to={{pathname: `/item/${note.id}`}}>Zur Notiz</Link>
                 </Paper>
             )

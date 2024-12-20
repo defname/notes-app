@@ -20,10 +20,14 @@ const ImagePlugin: NotePlugin<ContentType> = {
         </>)
     },
 
-    RenderInline: ({ item }: NotePluginProps<ContentType>) => {
+    RenderSmall: ({ item }: NotePluginProps<ContentType>) => {
         return (<Center>
             <Image src={item.content.base64} h={120} w="auto" alt={item.content.description} radius="md" />
         </Center>)
+    },
+
+    RenderInline: ({ item }: NotePluginProps<ContentType>) => {
+        return <>{ item.content.description }</>
     },
 
     RenderEditor: ({ item, onChange } : NoteEditorPluginProps<ContentType>) => {

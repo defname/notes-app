@@ -26,13 +26,17 @@ const TextPlugin: NotePlugin<ContentType> = {
         </>)
     },
 
-    RenderInline: ({ item }: NotePluginProps<ContentType>) => {
+    RenderSmall: ({ item }: NotePluginProps<ContentType>) => {
         return (<>
             <MText size="lg" fw="bold">{ item.content.title }</MText>
             <Spoiler showLabel="mehr" hideLabel="weniger">
                 <FormatText>{ item.content.text }</FormatText>
             </Spoiler>
         </>)
+    },
+
+    RenderInline: ({ item }: NotePluginProps<ContentType>) => {
+        return <>{ item.content.title }</>
     },
 
     RenderEditor: ({ item, onChange } : NoteEditorPluginProps<ContentType>) => {
