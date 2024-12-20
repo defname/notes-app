@@ -18,7 +18,7 @@ export default function NotesList({ notes }: NotesListProps) {
     {
         filteredNotes.map(note => {
             return (
-                <Paper p="lg" my="lg" shadow="md" radius="md" className="notes-list-item">
+                <Paper key={note.id} p="lg" my="lg" shadow="md" radius="md" className="notes-list-item">
                     <Notes.RenderInline item={ note } />
                     <Link to={{pathname: `/item/${note.id}`}}>Zur Notiz</Link>
                 </Paper>
