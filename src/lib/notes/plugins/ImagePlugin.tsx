@@ -62,11 +62,6 @@ const ImagePlugin: NotePlugin<ContentType> = {
         if (item.content.base64 === "") return false
         return true
     },
-    
-    match: (item: ItemType<ContentType>, searchStr: string) => {
-        if (item.content.description.includes(searchStr)) return true
-        return false
-    }
 }
 
 export default ImagePlugin
