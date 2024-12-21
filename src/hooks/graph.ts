@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import db, { DBItem } from "../lib/db"
 import { useAllItems, useItem } from "./data"
 import { useLiveQuery } from "dexie-react-hooks"
-import Notes from "../lib/notes"
 
 
 export class Node {
