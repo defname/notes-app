@@ -1,7 +1,6 @@
 import type { NotePluginProps, NoteEditorPluginProps, ItemType } from "../notes"
 import { NotePlugin } from "../notes"
-import { IconBlockquote } from "@tabler/icons-react"
-import { Text as MText, PolymorphicComponentProps, Space, Spoiler, Textarea, TextInput, TextProps, Title } from "@mantine/core"
+import { IconMapPin } from "@tabler/icons-react"
 
 interface ContentType {
     location: string
@@ -10,7 +9,7 @@ interface ContentType {
 
 
 const LocationPlugin: NotePlugin<ContentType> = {
-    forType: { id: "text", text: "Text", icon: IconBlockquote, defaultContent: { title: "", text: "" } },
+    forType: { id: "location", text: "Location", icon: IconMapPin, defaultContent: { location: "", searchstring: "" } },
     
     Render: ({ item }: NotePluginProps<ContentType>) => {
         return (<>
