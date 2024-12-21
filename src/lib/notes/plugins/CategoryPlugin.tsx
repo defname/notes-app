@@ -88,6 +88,10 @@ const CategoryPlugin: NotePlugin<ContentType> = {
         </FocusTrap>)
     },
 
+    asSearchable: (item: ItemType<ContentType>) => {
+        return [item.content.title]
+    },
+
     validateContent: async (item: ItemType<ContentType>|DBItem|undefined) => {
         if (!item) return false
         if (!Object.hasOwn(item, "id")) return item.content.title !== ""

@@ -7,6 +7,7 @@ import { IconX } from "@tabler/icons-react"
 import { notifications } from "@mantine/notifications"
 import { Node, useGraph } from "../hooks/graph"
 import NotesTree from "./NotesTree"
+import { useSearch } from "../hooks/filter"
 
 interface NotesListProps {
     parentId?: string
@@ -16,6 +17,7 @@ interface NotesListProps {
 export default function RelatedNotesList({ parentId }: NotesListProps) {
     const [searchStr, setSearchStr] = useState("")
     const [notes, setNotes] = useState<DBItem[]>([])
+    const filteredNotes = useSearch(notes, searchStr)
 
     const [root, asList] = useGraph(parentId)
 
@@ -40,7 +42,7 @@ export default function RelatedNotesList({ parentId }: NotesListProps) {
     <TextInput value={ searchStr } onChange={ev => setSearchStr(ev.target.value)} />
     <NotesTree root={ root } />
     {
-        notes.map(note => {
+        filteredNotes.map(note => {
             return (
                 <Paper key={note.id} p="lg" my="lg" shadow="md" radius="md" className="notes-list-item">
                     { parentId &&

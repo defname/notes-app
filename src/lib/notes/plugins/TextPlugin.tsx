@@ -49,6 +49,10 @@ const TextPlugin: NotePlugin<ContentType> = {
             <Textarea label="Text" autosize minRows={7} error={item.content.text === ""} placeholder="" value={ item.content.text } onChange={ev => onContentChange({...item.content, text: ev.target.value})}  />
         </>)
     },
+    
+    asSearchable: (item: ItemType<ContentType>) => {
+        return [item.content.title, item.content.text]
+    },
 
     validateContent: async (item: ItemType<ContentType>) => {
         if (item.content.title === "" || item.content.text === "") return false

@@ -51,7 +51,10 @@ export interface NotePlugin<ContentType> {
     RenderSmall: React.FC<NotePluginProps<ContentType>>
     RenderAsText: (props: NotePluginProps<ContentType>) => string
     RenderEditor: React.FC<NoteEditorPluginProps<ContentType>>
-    Icon: TablerIcon
+
+    /* Return a list of strings that can be used to search for this item.
+     * First strings in the list have a higher priority */
+    asSearchable: (item: ItemType<ContentType>) => string[]
 
     /* validator to check new item before it is written into the db */
     validateContent: (item: ItemType<ContentType>|DBItem) => Promise<boolean>
@@ -129,6 +132,15 @@ class _Notes {
         }
         const Icon = this.getTypeDescription(item.type)!.icon
         return <Icon {...props} />
+    }
+    
+    asSearchable(item: ItemType<any>|undefined) : string[] {
+        if (!item) return []
+        if (!Object.hasOwn(this.plugins, item.type)) {
+            console.warn(`There is no plugin registered to handle items of type '${ item && item.type }'`)
+            return []
+        }
+        return this.plugins[item.type].asSearchable(item)
     }
 
     supportedTypes() : TypeDescription<any>[] {

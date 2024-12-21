@@ -6,6 +6,7 @@ import { useState } from "react"
 import { useFilter } from "../hooks/data"
 import { IconX } from "@tabler/icons-react"
 import { notifications } from "@mantine/notifications"
+import { useSearch } from "../hooks/filter"
 
 
 interface NotesListProps {
@@ -16,7 +17,7 @@ interface NotesListProps {
 
 export default function NotesList({ notes, parentId }: NotesListProps) {
     const [searchStr, setSearchStr] = useState("")
-    const filteredNotes = useFilter(notes, searchStr)
+    const filteredNotes = useSearch(notes, searchStr)
 
     function getRemoveRelationHandler(id: string) {
         if (!parentId) return () => undefined

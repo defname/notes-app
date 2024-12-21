@@ -53,6 +53,10 @@ const ImagePlugin: NotePlugin<ContentType> = {
             }
         </>)
     },
+    
+    asSearchable: (item: ItemType<ContentType>) => {
+        return [item.content.description]
+    },
 
     validateContent: async (item: ItemType<ContentType>) => {
         if (item.content.base64 === "") return false
