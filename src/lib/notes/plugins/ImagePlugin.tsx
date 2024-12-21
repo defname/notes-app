@@ -26,8 +26,8 @@ const ImagePlugin: NotePlugin<ContentType> = {
         </Center>)
     },
 
-    RenderInline: ({ item }: NotePluginProps<ContentType>) => {
-        return <>{ item.content.description }</>
+    RenderAsText: ({ item }: NotePluginProps<ContentType>) => {
+        return item.content.description
     },
 
     RenderEditor: ({ item, onChange } : NoteEditorPluginProps<ContentType>) => {

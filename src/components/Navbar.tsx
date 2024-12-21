@@ -13,7 +13,7 @@ function NavbarSection({type}: {type: TypeDescription<any>}) {
             <Stack>
             <Title order={4}><Group><type.icon /> {type.text}</Group></Title>
             { 
-                items.map(item => <Link key={item.id} to={`/item/${item.id}`} className={`navbarlink ${item.id === id ? "selected" : ""}`}><Notes.RenderInline item={item} /></Link>)
+                items.map(item => <Link key={item.id} to={`/item/${item.id}`} className={`navbarlink ${item.id === id ? "selected" : ""}`}><Notes.RenderAsText item={item} /></Link>)
             }
             </Stack>
         </Card>

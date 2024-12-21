@@ -1,22 +1,27 @@
-import { ActionIcon, Paper, TextInput } from "@mantine/core"
+import { ActionIcon, Container, Group, Paper, TextInput } from "@mantine/core"
 import { Link } from "react-router"
 import Notes from "../lib/notes"
 import db, { DBItem } from "../lib/db"
-import { useState } from "react"
-import { useFilter } from "../hooks/data"
+import { useEffect, useState } from "react"
 import { IconX } from "@tabler/icons-react"
 import { notifications } from "@mantine/notifications"
-
+import { Node, useGraph } from "../hooks/graph"
+import NotesTree from "./NotesTree"
 
 interface NotesListProps {
-    notes: DBItem[]
     parentId?: string
 }
 
 
-export default function NotesList({ notes, parentId }: NotesListProps) {
+export default function RelatedNotesList({ parentId }: NotesListProps) {
     const [searchStr, setSearchStr] = useState("")
-    const filteredNotes = useFilter(notes, searchStr)
+    const [notes, setNotes] = useState<DBItem[]>([])
+
+    const [root, asList] = useGraph(parentId)
+
+    useEffect(() => {
+        setNotes(asList().map(node => node.item))
+    }, [root])
 
     function getRemoveRelationHandler(id: string) {
         if (!parentId) return () => undefined
@@ -33,8 +38,9 @@ export default function NotesList({ notes, parentId }: NotesListProps) {
 
     return (<>
     <TextInput value={ searchStr } onChange={ev => setSearchStr(ev.target.value)} />
+    <NotesTree root={ root } />
     {
-        filteredNotes.map(note => {
+        notes.map(note => {
             return (
                 <Paper key={note.id} p="lg" my="lg" shadow="md" radius="md" className="notes-list-item">
                     { parentId &&

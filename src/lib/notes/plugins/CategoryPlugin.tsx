@@ -29,8 +29,8 @@ const CategoryPlugin: NotePlugin<ContentType> = {
         </>)
     },
 
-    RenderInline: ({ item }: NotePluginProps<ContentType>) => {
-        return <>{ item.content.title }</>
+    RenderAsText: ({ item }: NotePluginProps<ContentType>) => {
+        return item.content.title
     },
 
     RenderEditor: ({ item, onChange, create, parentId } : NoteEditorPluginProps<ContentType>) => {

@@ -2,10 +2,10 @@ import { useNavigate, useParams } from "react-router"
 import MainLayout from "../MainLayout"
 import Notes from "../../lib/notes"
 import { ScrollArea, Title } from "@mantine/core"
-import NotesList from "../../components/NotesList"
 import { useItem, useRelatedItems } from "../../hooks/data"
 import db from "../../lib/db"
 import { notifications } from "@mantine/notifications"
+import RelatedNotesList from "../../components/RelatedNotes"
 
 
 function Aside() {
@@ -14,7 +14,7 @@ function Aside() {
 
     return (<ScrollArea><Title order={3}>Verknüpfte Notizen</Title>{
         relItems.length > 0 && (<>
-            <NotesList notes={relItems} parentId={id} />
+            <RelatedNotesList parentId={id} />
         </>)
     }</ScrollArea>)
 }

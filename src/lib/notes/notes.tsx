@@ -3,7 +3,7 @@
  */
 
 import { Loader } from "@mantine/core"
-import { TablerIcon } from "@tabler/icons-react"
+import { Icon, IconProps, IconXxx, TablerIcon } from "@tabler/icons-react"
 import React from "react"
 
 import { modules } from "./notes.config"
@@ -49,8 +49,9 @@ export interface NotePlugin<ContentType> {
     
     Render: React.FC<NotePluginProps<ContentType>>
     RenderSmall: React.FC<NotePluginProps<ContentType>>
-    RenderInline: React.FC<NotePluginProps<ContentType>>
+    RenderAsText: (props: NotePluginProps<ContentType>) => string
     RenderEditor: React.FC<NoteEditorPluginProps<ContentType>>
+    Icon: TablerIcon
 
     /* validator to check new item before it is written into the db */
     validateContent: (item: ItemType<ContentType>|DBItem) => Promise<boolean>
@@ -72,8 +73,9 @@ class _Notes {
 
         this.Render = this.Render.bind(this)
         this.RenderSmall = this.RenderSmall.bind(this)
-        this.RenderInline = this.RenderInline.bind(this)
+        this.RenderAsText = this.RenderAsText.bind(this)
         this.RenderEditor = this.RenderEditor.bind(this)
+        this.Icon = this.Icon.bind(this)
     }
 
     register(plugin: NotePlugin<any>) {
@@ -102,12 +104,13 @@ class _Notes {
         return this.plugins[item.type].RenderSmall({ item, ...props })
     }
 
-    RenderInline({ item, ...props }: NotePublicPluginProps<any>) {
-        if (!item) return <Loader />
+    RenderAsText({ item, ...props }: NotePublicPluginProps<any>): string{
+        if (!item) return "..."
         if (!Object.hasOwn(this.plugins, item.type)) {
-            return this._fallback({ item })
+            console.warn(`There is no plugin registered to handle items of type '${ item && item.type }'`)
+            return "Can't handle " + item.type
         }
-        return this.plugins[item.type].RenderInline({ item, ...props })
+        return this.plugins[item.type].RenderAsText({ item, ...props })
     }
 
     RenderEditor({ item, onChange, create, ...props }: NoteEditorPublicPluginProps<any>) {
@@ -116,6 +119,16 @@ class _Notes {
             return this._fallback({ item })
         }
         return this.plugins[item.type].RenderEditor({ item, onChange, create, ...props })
+    }
+
+    Icon({item, ...props}: {item: ItemType<any>|undefined} & IconProps & React.RefAttributes<Icon>) : JSX.Element {
+        if (!item) return <IconXxx {...props} />
+        if (!Object.hasOwn(this.plugins, item.type)) {
+            console.warn(`There is no plugin registered to handle items of type '${ item && item.type }'`)
+            return <IconXxx {...props} />
+        }
+        const Icon = this.getTypeDescription(item.type)!.icon
+        return <Icon {...props} />
     }
 
     supportedTypes() : TypeDescription<any>[] {

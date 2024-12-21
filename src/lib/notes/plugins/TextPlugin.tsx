@@ -35,8 +35,8 @@ const TextPlugin: NotePlugin<ContentType> = {
         </>)
     },
 
-    RenderInline: ({ item }: NotePluginProps<ContentType>) => {
-        return <>{ item.content.title }</>
+    RenderAsText: ({ item }: NotePluginProps<ContentType>) => {
+        return item.content.title
     },
 
     RenderEditor: ({ item, onChange } : NoteEditorPluginProps<ContentType>) => {
