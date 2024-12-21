@@ -4,13 +4,18 @@ import Notes from "../lib/notes"
 import { useEffect, useState } from "react"
 
 
-interface FilterProps {
+export interface FilterOpts {
     searchStr: string
-    filterCategories: string[]
+    filterTypes: string[]
 }
 
-function usePrefilter(items: DBItem[], filter: FilterProps) {
-    return items.filter(item => filter.filterCategories.includes(item.type))
+function usePrefilter(items: DBItem[], filter: FilterOpts) {
+    const [filtered, setFiltered] = useState<DBItem[]>([])
+    useEffect(() => {
+        setFiltered(items.filter(item => !filter.filterTypes.includes(item.type)))
+    }, [items, filter])
+
+    return filtered
 }
 
 export function useSearch(items: DBItem[], searchStr: string) {
@@ -33,7 +38,7 @@ export function useSearch(items: DBItem[], searchStr: string) {
     return results
 }
 
-export function useFilter(items: DBItem[], filter: FilterProps) {
+export function useFilter(items: DBItem[], filter: FilterOpts) {
     const prefilteredItems = usePrefilter(items, filter)
     const results = useSearch(prefilteredItems, filter.searchStr)
 

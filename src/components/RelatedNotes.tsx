@@ -1,13 +1,14 @@
-import { ActionIcon, Container, Group, Paper, TextInput } from "@mantine/core"
+import { ActionIcon, Paper } from "@mantine/core"
 import { Link } from "react-router"
 import Notes from "../lib/notes"
 import db, { DBItem } from "../lib/db"
 import { useEffect, useState } from "react"
 import { IconX } from "@tabler/icons-react"
 import { notifications } from "@mantine/notifications"
-import { Node, useGraph } from "../hooks/graph"
+import { useGraph } from "../hooks/graph"
 import NotesTree from "./NotesTree"
-import { useSearch } from "../hooks/filter"
+import { FilterOpts, useFilter } from "../hooks/filter"
+import SearchField from "./SearchField"
 
 interface NotesListProps {
     parentId?: string
@@ -15,9 +16,9 @@ interface NotesListProps {
 
 
 export default function RelatedNotesList({ parentId }: NotesListProps) {
-    const [searchStr, setSearchStr] = useState("")
+    const [filterOpts, setFilterOpts] = useState<FilterOpts>({ searchStr: "", filterTypes: [] })
     const [notes, setNotes] = useState<DBItem[]>([])
-    const filteredNotes = useSearch(notes, searchStr)
+    const filteredNotes = useFilter(notes, filterOpts)
 
     const [root, asList] = useGraph(parentId)
 
@@ -39,8 +40,8 @@ export default function RelatedNotesList({ parentId }: NotesListProps) {
     }
 
     return (<>
-    <TextInput value={ searchStr } onChange={ev => setSearchStr(ev.target.value)} />
     <NotesTree root={ root } />
+    <SearchField value={filterOpts} onChange={setFilterOpts} />
     {
         filteredNotes.map(note => {
             return (
