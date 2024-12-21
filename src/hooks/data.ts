@@ -1,5 +1,5 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import db, { DBItem } from "../lib/db";
+import db from "../lib/db";
 import Notes, { ItemType } from "../lib/notes";
 import { useCallback, useEffect, useState } from "react";
 
@@ -34,10 +34,6 @@ export function useRelatedItems(id: string|undefined) {
 export function useAllItems() {
     const items = useLiveQuery(() => db.items.toArray(), [], [])
     return items
-}
-
-export function useFilter(items: DBItem[], searchStr: string): DBItem[] {
-    return items.filter(item => Notes.match(item, searchStr))
 }
 
 export function useItemIsValid(item: ItemType|undefined) {

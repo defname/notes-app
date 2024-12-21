@@ -99,11 +99,6 @@ const CategoryPlugin: NotePlugin<ContentType> = {
         const duplicate = allCategories.find(duplicate => duplicate.content.title === item.content.title)
         return (duplicate === undefined || duplicate.id === (item as DBItem).id) && item.content.title !== ""
     },
-    
-    match: (item: ItemType<ContentType>, searchStr: string) => {
-        if (item.content.title.includes(searchStr)) return true
-        return false
-    }
 }
 
 export default CategoryPlugin

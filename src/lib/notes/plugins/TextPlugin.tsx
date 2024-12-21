@@ -58,11 +58,6 @@ const TextPlugin: NotePlugin<ContentType> = {
         if (item.content.title === "" || item.content.text === "") return false
         return true
     },
-    
-    match: (item: ItemType<ContentType>, searchStr: string) => {
-        if (item.content.title.includes(searchStr) || item.content.text.includes(searchStr)) return true
-        return false
-    }
 }
 
 export default TextPlugin

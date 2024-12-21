@@ -58,8 +58,6 @@ export interface NotePlugin<ContentType> {
 
     /* validator to check new item before it is written into the db */
     validateContent: (item: ItemType<ContentType>|DBItem) => Promise<boolean>
-    /* used to filter a list of items */
-    match: (item: ItemType<ContentType>, searchString: string) => boolean
 }
 
 
@@ -159,11 +157,6 @@ class _Notes {
             return false
         }
         return this.plugins[item.type].validateContent(item)
-    }
-
-    match(item: ItemType<any>, searchStr: string): boolean {
-        if (!Object.hasOwn(this.plugins, item.type)) return false
-        return this.plugins[item.type].match(item, searchStr)
     }
 }
 
