@@ -10,9 +10,19 @@ import AddressSearch from "./components/AddressSearchBox"
 import { GeoLocation, PhotonProvider } from "./lib/geolocation"
 import { Text, TextInput } from "@mantine/core"
 
-import "leaflet/dist/images/marker-shadow.png"
+import * as L from "leaflet"
+import icon from 'leaflet/dist/images/marker-icon.png'
+import iconShadow from 'leaflet/dist/images/marker-shadow.png'
 
 import "./LocationPlugin.styles.css"
+
+/* fix leaflet icon problem */
+let DefaultIcon = L.icon({
+    iconUrl: icon,
+    shadowUrl: iconShadow
+});
+L.Marker.prototype.options.icon = DefaultIcon;
+
 
 interface ContentType {
     location: string
