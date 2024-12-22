@@ -64,7 +64,6 @@ export interface NotePlugin<ContentType> {
 
 }
 
-
 class _Notes {
     plugins: {[type: string]: NotePlugin<any>}
 

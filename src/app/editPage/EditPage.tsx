@@ -7,7 +7,6 @@ import db, { DBItem } from "../../lib/db"
 import SaveButton from "../../components/SaveButton"
 import { notifications } from "@mantine/notifications"
 
-
 export function EditPage() {
     const { id } = useParams()
     const item = useItem(id)
@@ -42,5 +41,4 @@ export function EditPage() {
         <Notes.RenderEditor item={ modifiedItem } onChange={(item: any) => item && onChangeHandler(item)} />
         <SaveButton onClick={ onSaveHandler } hidden={ !itemIsValid } />
     </MainLayout>)
-
 }
