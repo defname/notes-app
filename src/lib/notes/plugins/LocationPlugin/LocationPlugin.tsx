@@ -99,14 +99,14 @@ const LocationPlugin: NotePlugin<ContentType> = {
                                     <Text fs="italic">{ item.content.searchstring }</Text>
                                 </Stack>
                                 <Stack align="flex-start">
-                                    <CopyButton value="https://mantine.dev">
+                                    <CopyButton value={item.content.location}>
                                     {({ copied, copy }) => (
                                         <ActionIcon color={copied ? 'teal' : 'blue'} onClick={copy}>
                                             {copied ? <IconCopyCheck /> : <IconCopy />}
                                         </ActionIcon>
                                     )}
                                     </CopyButton>
-                                    <ActionIcon>
+                                    <ActionIcon onClick={() => window.open(getGoogleMapsLink(item.content))}>
                                         <IconNavigation />
                                     </ActionIcon>
                                 </Stack>
