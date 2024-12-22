@@ -3,14 +3,12 @@ import { NotePlugin } from "../notes"
 import { IconMapPin } from "@tabler/icons-react"
 import "leaflet/dist/leaflet.css"
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet"
-import * as L from "leaflet"
 import 'leaflet-geosearch/dist/geosearch.css'
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import { notifications } from "@mantine/notifications"
 import AddressSearch from "../../../components/AddressSearchBox"
 import { GeoLocation, PhotonProvider } from "../../geolocation"
-import domtoimage from "dom-to-image"
-import { Button, Image, Text, TextInput } from "@mantine/core"
+import { Text, TextInput } from "@mantine/core"
 
 
 interface ContentType {
@@ -46,7 +44,7 @@ function MapController({center, onLocationClicked, onZoomChange}: MapControllerP
             })
     })
 
-    map.on("zoomend", (ev) => {
+    map.on("zoomend", () => {
         onZoomChange(map.getZoom())
     })
 
@@ -117,15 +115,6 @@ const LocationPlugin: NotePlugin<ContentType> = {
     },
 
     RenderEditor: ({ item, onChange } : NoteEditorPluginProps<ContentType>) => {
-
-        function onContentChange(content: ContentType) {
-            onChange({...item, content: content})
-        }
-
-        function onChangeLatLng(latlng: [number, number], location: string) {
-            onChange({...item, content: {...item.content, location, latlng}})
-        }
-
         function onChangeText(location: string) {
             onChange({...item, content: {...item.content, location: location, latlng: undefined}})
         }
