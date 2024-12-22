@@ -1,6 +1,6 @@
 import type { NotePluginProps, NoteEditorPluginProps, ItemType } from "../../notes"
 import { NotePlugin } from "../../notes"
-import { IconMapPin } from "@tabler/icons-react"
+import { IconCopy, IconCopyCheck, IconMapPin, IconNavigation } from "@tabler/icons-react"
 import "leaflet/dist/leaflet.css"
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet"
 import 'leaflet-geosearch/dist/geosearch.css'
@@ -8,18 +8,22 @@ import { useEffect } from "react"
 import { notifications } from "@mantine/notifications"
 import AddressSearch from "./components/AddressSearchBox"
 import { GeoLocation, PhotonProvider } from "./lib/geolocation"
-import { Text, TextInput } from "@mantine/core"
+import { ActionIcon, Anchor, CopyButton, Group, Stack, Text, TextInput } from "@mantine/core"
 
 import * as L from "leaflet"
 import icon from 'leaflet/dist/images/marker-icon.png'
 import iconShadow from 'leaflet/dist/images/marker-shadow.png'
 
 import "./LocationPlugin.styles.css"
+import { getGoogleMapsLink } from "./lib/helper"
 
 /* fix leaflet icon problem */
 let DefaultIcon = L.icon({
     iconUrl: icon,
-    shadowUrl: iconShadow
+    shadowUrl: iconShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [0, -41]
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
@@ -89,8 +93,24 @@ const LocationPlugin: NotePlugin<ContentType> = {
                     />
                     <Marker position={item.content.latlng}>
                         <Popup keepInView>
-                            <p>{ item.content.location }</p>
-                            <small>{ item.content.searchstring }</small>
+                            <Group justify="space-between" wrap="nowrap">
+                                <Stack>
+                                    <Text mb="xs">{ item.content.location }</Text>
+                                    <Text fs="italic">{ item.content.searchstring }</Text>
+                                </Stack>
+                                <Stack align="flex-start">
+                                    <CopyButton value="https://mantine.dev">
+                                    {({ copied, copy }) => (
+                                        <ActionIcon color={copied ? 'teal' : 'blue'} onClick={copy}>
+                                            {copied ? <IconCopyCheck /> : <IconCopy />}
+                                        </ActionIcon>
+                                    )}
+                                    </CopyButton>
+                                    <ActionIcon>
+                                        <IconNavigation />
+                                    </ActionIcon>
+                                </Stack>
+                            </Group>
                         </Popup>
                     </Marker>
                 </MapContainer>
