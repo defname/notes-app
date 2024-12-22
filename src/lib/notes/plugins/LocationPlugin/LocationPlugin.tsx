@@ -8,7 +8,7 @@ import { useEffect } from "react"
 import { notifications } from "@mantine/notifications"
 import AddressSearch from "./components/AddressSearchBox"
 import { GeoLocation, PhotonProvider } from "./lib/geolocation"
-import { ActionIcon, Anchor, Container, CopyButton, Group, Stack, Text, TextInput } from "@mantine/core"
+import { ActionIcon, CopyButton, Group, Stack, Text, TextInput } from "@mantine/core"
 
 import * as L from "leaflet"
 import icon from 'leaflet/dist/images/marker-icon.png'
