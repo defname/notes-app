@@ -1,6 +1,6 @@
 import { ActionIcon, Paper } from "@mantine/core"
 import { Link } from "react-router"
-import Notes from "../lib/notes"
+import Note from "../lib/notes"
 import db, { DBItem } from "../lib/db"
 import { useEffect, useState } from "react"
 import { IconX } from "@tabler/icons-react"
@@ -51,7 +51,7 @@ export default function RelatedNotesList({ parentId }: NotesListProps) {
                             <IconX style={{ width: '70%', height: '70%' }} stroke={1.5} />
                         </ActionIcon>
                     }
-                    <Notes.RenderSmall item={ note } />
+                    <Note.Small item={ note } />
                     <Link to={{pathname: `/item/${note.id}`}}>Zur Notiz</Link>
                 </Paper>
             )

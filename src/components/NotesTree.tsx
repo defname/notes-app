@@ -1,6 +1,6 @@
 import { List } from "@mantine/core"
 import { Node } from "../hooks/graph"
-import Notes from "../lib/notes"
+import Note from "../lib/notes"
 import { Link } from "react-router"
 
 
@@ -9,9 +9,9 @@ interface NotesTreeNodeProps {
 }
 
 function NotesTreeNode({ node } : NotesTreeNodeProps) {
-    return (<List.Item icon={<Notes.Icon item={node.item} stroke={1} />}>
+    return (<List.Item icon={<Note.Icon item={node.item} stroke={1} />}>
         <Link to={`/item/${node.item.id}`}>
-            <Notes.RenderAsText item={node.item} />
+            <Note.Text item={node.item} />
         </Link>
         { node.children.length > 0 && <List listStyleType="none">
             {

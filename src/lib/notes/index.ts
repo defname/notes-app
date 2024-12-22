@@ -1,4 +1,6 @@
-import { ItemType, NotePlugin, Notes } from "./notes"
+import Note from "./Note"
+import { ItemType, NotePlugin, NotesManager } from "./notesmanager"
 
 export type { ItemType, NotePlugin as RendererPlugin }
-export default Notes
+export default Note
+export { NotesManager }

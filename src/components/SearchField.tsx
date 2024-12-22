@@ -1,7 +1,7 @@
 import { ActionIcon, Stack, TextInput } from "@mantine/core"
 import { FilterOpts } from "../hooks/filter"
 import { IconSearch } from "@tabler/icons-react"
-import Notes from "../lib/notes"
+import { NotesManager } from "../lib/notes"
 
 interface SearchFieldProps {
     value: FilterOpts
@@ -26,7 +26,7 @@ export default function SearchField({ value, onChange }: SearchFieldProps) {
         <Stack gap="xs">
             <TextInput value={ value.searchStr } onChange={ev => onChange({...value, searchStr: ev.target.value})} leftSection={<IconSearch />} />
             <ActionIcon.Group>
-                { Notes.supportedTypes().map(type => (
+                { NotesManager.supportedTypes().map(type => (
                     <ActionIcon
                         key={type.id}
                         onClick={toggleTypeFilterHandler(type.id)}

@@ -1,6 +1,6 @@
 import { DBItem } from "../lib/db"
 import Fuse from "fuse.js"
-import Notes from "../lib/notes"
+import { NotesManager } from "../lib/notes"
 import { useEffect, useState } from "react"
 
 
@@ -20,7 +20,7 @@ function usePrefilter(items: DBItem[], filter: FilterOpts) {
 
 export function useSearch(items: DBItem[], searchStr: string) {
     const [results, setResults] = useState<DBItem[]>([])
-    const searchables = items.map(item => ({ item: item, searchable: Notes.asSearchable(item) }))
+    const searchables = items.map(item => ({ item: item, searchable: NotesManager.asSearchable(item) }))
     const fuse = new Fuse(searchables, {
         includeScore: true,
         keys: ["searchable"]

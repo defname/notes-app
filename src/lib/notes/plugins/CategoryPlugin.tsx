@@ -1,5 +1,5 @@
-import type { NotePluginProps, NoteEditorPluginProps, ItemType, TypeDescription } from "../notes"
-import { NotePlugin } from "../notes"
+import type { NotePluginProps, NoteEditorPluginProps, ItemType, TypeDescription } from "../notesmanager"
+import { NotePlugin } from "../notesmanager"
 import { IconCategory } from "@tabler/icons-react"
 import { Autocomplete, FocusTrap, Text, TextInput, Title } from "@mantine/core"
 import db, { DBItem } from "../../db"

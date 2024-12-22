@@ -2,8 +2,8 @@
 import { useNavigate, useParams, useSearchParams } from 'react-router'
 import MainLayout from '../MainLayout'
 import { useEffect, useState } from 'react'
-import { ItemType } from '../../lib/notes'
-import Notes from '../../lib/notes'
+import Note, { ItemType } from '../../lib/notes'
+import { NotesManager } from '../../lib/notes'
 import SaveButton from '../../components/SaveButton'
 import db, { DBItem } from '../../lib/db'
 import { notifications } from '@mantine/notifications'
@@ -21,11 +21,11 @@ async function saveItemToDb(newItem: ItemType<any>|undefined, parentId: string|n
   /* validate the new item
    * the plugin's RenderEditor method is in charge of showing hints what exactly
    * is not ok */
-  if (!await Notes.validateContent(newItem)) {
+  if (!await NotesManager.validateContent(newItem)) {
     throw "Die Angaben sind nicht vollständig oder nicht korrekt."
   }
 
-  const newItemFinalized = await Notes.finalize(newItem)
+  const newItemFinalized = await NotesManager.finalize(newItem)
 
 
   /* Check if the returned item already exists (in this case it has an id) and if so
@@ -73,7 +73,7 @@ export function CreatePage() {
 
   useEffect(() => {
     if (type === undefined) return
-    const typeDescr = Notes.getTypeDescription(type)
+    const typeDescr = NotesManager.getTypeDescription(type)
     if (typeDescr === undefined) return
     setNewItem({ type: type, content: typeDescr.defaultContent })
   }, [type])
@@ -96,7 +96,7 @@ export function CreatePage() {
 
   return (
     <MainLayout showFloatingButtons={false}>
-      <Notes.RenderEditor item={ newItem } onChange={(item: ItemType<any>) => item && setNewItem(item)} parentId={parentId} create />
+      <Note.Editor item={ newItem } onChange={(item: ItemType<any>) => item && setNewItem(item)} parentId={parentId} create />
       <SaveButton onClick={ saveButtonHandler } hidden={ !itemIsValid } />
     </MainLayout>
   )

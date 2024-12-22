@@ -1,5 +1,5 @@
-import type { NotePluginProps, NoteEditorPluginProps, ItemType, TypeDescription } from "../../notes"
-import { NotePlugin } from "../../notes"
+import type { NotePluginProps, NoteEditorPluginProps, ItemType, TypeDescription } from "../../notesmanager"
+import { NotePlugin } from "../../notesmanager"
 import { IconCopy, IconCopyCheck, IconMapPin, IconNavigation } from "@tabler/icons-react"
 import "leaflet/dist/leaflet.css"
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet"

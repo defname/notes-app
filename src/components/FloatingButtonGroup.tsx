@@ -3,7 +3,7 @@ import { DBItem } from "../lib/db"
 import { IconDotsVertical, IconEdit, IconPlus, IconQuestionMark, IconTrash } from "@tabler/icons-react"
 import { useState } from "react"
 import { useClickOutside } from "@mantine/hooks"
-import Notes from "../lib/notes"
+import { NotesManager } from "../lib/notes"
 import { useNavigate } from "react-router"
 
 interface FloatingButtonGroupProps {
@@ -59,7 +59,7 @@ export default function FloatingButtonGroup({ currentItem, onEditClicked, onDele
                     </>}
                     { addItemMenuVisible && <>
                         {
-                            Notes.supportedTypes().map(type => (
+                            NotesManager.supportedTypes().map(type => (
                                 <ActionIcon onClick={ () => navigate(`/create/${type.id}${parentIdUrlStr}`)} key={type.id} variant="filled" size="input-md" radius="xl">
                                     <type.icon style={{ width: '70%', height: '70%' }} stroke={1.5} />
                                 </ActionIcon>

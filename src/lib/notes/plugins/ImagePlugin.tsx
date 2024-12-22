@@ -1,5 +1,5 @@
-import type { NotePluginProps, NoteEditorPluginProps, ItemType, TypeDescription } from "../notes"
-import { NotePlugin } from "../notes"
+import type { NotePluginProps, NoteEditorPluginProps, ItemType, TypeDescription } from "../notesmanager"
+import { NotePlugin } from "../notesmanager"
 import { IconPhoto } from "@tabler/icons-react"
 import { Button, FileButton, Image, Text, Space, TextInput, Center } from "@mantine/core"
 

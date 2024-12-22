@@ -1,11 +1,11 @@
 import { useNavigate, useParams } from "react-router"
 import MainLayout from "../MainLayout"
-import Notes from "../../lib/notes"
 import { ScrollArea, Title } from "@mantine/core"
 import { useItem, useRelatedItems } from "../../hooks/data"
 import db from "../../lib/db"
 import { notifications } from "@mantine/notifications"
 import RelatedNotesList from "../../components/RelatedNotes"
+import Note from "../../lib/notes"
 
 
 function Aside() {
@@ -59,7 +59,7 @@ export function DisplayPage() {
 
     return (
         <MainLayout aside={<Aside />} showFloatingButtons={ true } currentItem={ item } onDeleteClicked={ onDeleteClickedHandler } onEditClicked={ onEditClickedHandler }>
-            <Notes.Render item={item} />
+            <Note item={item} />
         </MainLayout>
     )
 }

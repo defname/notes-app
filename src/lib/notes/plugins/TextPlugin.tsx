@@ -1,5 +1,5 @@
-import type { NotePluginProps, NoteEditorPluginProps, ItemType, TypeDescription } from "../notes"
-import { NotePlugin } from "../notes"
+import type { NotePluginProps, NoteEditorPluginProps, ItemType, TypeDescription } from "../notesmanager"
+import { NotePlugin } from "../notesmanager"
 import { IconBlockquote } from "@tabler/icons-react"
 import { Text as MText, PolymorphicComponentProps, Space, Spoiler, Textarea, TextInput, TextProps, Title } from "@mantine/core"
 import Markdown from "react-markdown"
