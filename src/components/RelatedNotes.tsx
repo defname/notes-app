@@ -14,7 +14,6 @@ interface NotesListProps {
     parentId?: string
 }
 
-
 export default function RelatedNotesList({ parentId }: NotesListProps) {
     const [filterOpts, setFilterOpts] = useState<FilterOpts>({ searchStr: "", filterTypes: [] })
     const [notes, setNotes] = useState<DBItem[]>([])

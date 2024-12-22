@@ -1,9 +1,19 @@
+/**
+ * LocationPlugin module to handle address-based notes.
+ * Provides rendering, editing, and validation functionalities for address notes.
+ * 
+ * This module uses the following libraries:
+ * - Leaflet (https://leafletjs.com/): BSD 2-Clause "Simplified" License
+ * - react-leaflet (https://react-leaflet.js.org/): MIT License
+ * - @mantine/core (https://mantine.dev/): MIT License
+ * - @tabler/icons-react (https://tabler-icons.io/): MIT License
+ */
+
 import type { NotePluginProps, NoteEditorPluginProps, ItemType, TypeDescription } from "../../notesmanager"
 import { NotePlugin } from "../../notesmanager"
 import { IconCopy, IconCopyCheck, IconMapPin, IconNavigation } from "@tabler/icons-react"
 import "leaflet/dist/leaflet.css"
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet"
-import 'leaflet-geosearch/dist/geosearch.css'
 import { useEffect } from "react"
 import { notifications } from "@mantine/notifications"
 import AddressSearch from "./components/AddressSearchBox"
