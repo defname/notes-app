@@ -83,6 +83,7 @@ button:focus-visible {
   --note-list-item-color-background: var(--mantine-color-gray-9)
 }
 
+
 a {
   color: var(--mantine-primary-color-light-color);
   text-decoration: none;
@@ -103,4 +104,16 @@ a:hover {
   .mantine-List-itemWrapper {
     align-items: flex-start;
   }
+}
+
+.leaflet-control-geosearch {
+  color: black;
+  input {
+    background: white;
+    color: black;
+  }
+}
+
+.leaflet-marker-icon {
+  filter: hue-rotate(120deg);
 }
