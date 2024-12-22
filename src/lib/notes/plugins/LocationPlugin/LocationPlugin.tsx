@@ -1,15 +1,18 @@
-import type { NotePluginProps, NoteEditorPluginProps, ItemType } from "../notes"
-import { NotePlugin } from "../notes"
+import type { NotePluginProps, NoteEditorPluginProps, ItemType } from "../../notes"
+import { NotePlugin } from "../../notes"
 import { IconMapPin } from "@tabler/icons-react"
 import "leaflet/dist/leaflet.css"
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet"
 import 'leaflet-geosearch/dist/geosearch.css'
 import { useEffect } from "react"
 import { notifications } from "@mantine/notifications"
-import AddressSearch from "../../../components/AddressSearchBox"
-import { GeoLocation, PhotonProvider } from "../../geolocation"
+import AddressSearch from "./components/AddressSearchBox"
+import { GeoLocation, PhotonProvider } from "./lib/geolocation"
 import { Text, TextInput } from "@mantine/core"
 
+import "leaflet/dist/images/marker-shadow.png"
+
+import "./LocationPlugin.styles.css"
 
 interface ContentType {
     location: string
