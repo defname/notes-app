@@ -1,0 +1,17 @@
+
+.leaflet-control { z-index: 0 !important}
+.leaflet-pane { z-index: 0 !important}
+.leaflet-top, .leaflet-bottom {z-index: 0 !important}
+
+
+.leaflet-control-geosearch {
+    color: black;
+    input {
+      background: white;
+      color: black;
+    }
+  }
+  
+  .leaflet-marker-icon {
+    filter: hue-rotate(120deg);
+  }
