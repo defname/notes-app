@@ -2,10 +2,9 @@ import { useNavigate, useParams } from "react-router"
 import MainLayout from "../MainLayout"
 import { ScrollArea, Title } from "@mantine/core"
 import { useItem, useRelatedItems } from "../../hooks/data"
-import db from "../../lib/db"
 import { notifications } from "@mantine/notifications"
 import RelatedNotesList from "../../components/RelatedNotes"
-import Note from "../../lib/notes"
+import Note, { NotesManager } from "../../lib/notes"
 
 
 function Aside() {
@@ -31,14 +30,10 @@ export function DisplayPage() {
             console.warn("No id to delete")
             return
         }
-        db.items.delete(id)
+        NotesManager.db.deleteItem(id)
             .then(() => {
-                db.relations.where("item1").equals(id).or("item2").equals(id).delete()
-                    .then(() => {
-                        notifications.show({ title: "Gelöscht", message: "Notiz wurde gelöscht" })
-                        navigate(-1)
-                        return
-                    })
+                notifications.show({ title: "Gelöscht", message: "Notiz wurde gelöscht" })
+                navigate(-1)
             })
             .catch(err => {
                 notifications.show({ title: "Fehler", message: "Notiz konnte nicht gelöscht werden" })

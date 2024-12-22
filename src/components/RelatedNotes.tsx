@@ -1,7 +1,7 @@
 import { ActionIcon, Paper } from "@mantine/core"
 import { Link } from "react-router"
-import Note from "../lib/notes"
-import db, { DBItem } from "../lib/db"
+import Note, { NotesManager } from "../lib/notes"
+import { DBItem } from "../lib/db"
 import { useEffect, useState } from "react"
 import { IconX } from "@tabler/icons-react"
 import { notifications } from "@mantine/notifications"
@@ -30,7 +30,7 @@ export default function RelatedNotesList({ parentId }: NotesListProps) {
         if (!parentId) return () => undefined
         return function () {
             console.log("Remove relation", id, parentId)
-            db.relations.where("[item1+item2]").anyOf([[id, parentId], [parentId, id]]).delete()
+            NotesManager.db.deleteRelation(parentId, id)
                 .then(() => notifications.show({ title: "Gelöscht", message: "Verknüpfung wurde gelöscht" }))
                 .catch(err => {
                     console.warn(err)
