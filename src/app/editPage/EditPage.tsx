@@ -29,9 +29,10 @@ export function EditPage() {
             notifications.show({ title: "Fehler", message: "Die Angaben sind nicht vollständig oder nicht korrekt." })
             return
         }
-        console.log(modifiedItem.id)
-        return db.items.update(modifiedItem.id, {"content": modifiedItem.content})
-            .then(() => navigate(`/item/${modifiedItem.id}`))
+        const finalizedItem = (await Notes.finalize(modifiedItem)) as DBItem
+        console.log(finalizedItem.id)
+        return db.items.update(finalizedItem.id, {"content": finalizedItem.content})
+            .then(() => navigate(`/item/${finalizedItem.id}`))
             .catch(err => notifications.show({ title: "Fehler", message: err }))
     }
     

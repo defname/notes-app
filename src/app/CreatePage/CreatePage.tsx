@@ -25,19 +25,21 @@ async function saveItemToDb(newItem: ItemType<any>|undefined, parentId: string|n
     throw "Die Angaben sind nicht vollständig oder nicht korrekt."
   }
 
+  const newItemFinalized = await Notes.finalize(newItem)
+
 
   /* Check if the returned item already exists (in this case it has an id) and if so
    * just create a relation between the parent item and the returned item */
-  if (Object.hasOwn(newItem, "id") && (newItem as DBItem).id! !== undefined) {
+  if (Object.hasOwn(newItemFinalized, "id") && (newItemFinalized as DBItem).id! !== undefined) {
     console.log("Item already exists")
     if (parentId === null) {
       throw "Die Notiz existiert bereits."
     }
 
-    if (parentId === (newItem as DBItem).id) {
+    if (parentId === (newItemFinalized as DBItem).id) {
       throw "Eine Notiz kann nicht mit sich selbst verknüpft werden."
     }
-    const existingItemId = (newItem as DBItem).id
+    const existingItemId = (newItemFinalized as DBItem).id
     if (await checkForRelation(parentId, existingItemId)) {
       notify("Die Verbindung existiert bereits.")
       return existingItemId
@@ -48,7 +50,7 @@ async function saveItemToDb(newItem: ItemType<any>|undefined, parentId: string|n
 
   /* If the item is actually a new one add it to the database and create a relation
    * to the parent item, if a parent item is specified */
-  return db.items.add(newItem)
+  return db.items.add(newItemFinalized)
     .then(newId => {
       if (parentId !== null) {
         return db.relations.add({item1: newId, item2: parentId})
