@@ -2,6 +2,7 @@ import type { NotePluginProps, NoteEditorPluginProps, ItemType } from "../notes"
 import { NotePlugin } from "../notes"
 import { IconBlockquote } from "@tabler/icons-react"
 import { Text as MText, PolymorphicComponentProps, Space, Spoiler, Textarea, TextInput, TextProps, Title } from "@mantine/core"
+import Markdown from "react-markdown"
 
 interface ContentType {
     title: string
@@ -22,7 +23,7 @@ const TextPlugin: NotePlugin<ContentType> = {
     Render: ({ item }: NotePluginProps<ContentType>) => {
         return (<>
             <Title order={2}>{ item.content.title }</Title>
-            <FormatText>{ item.content.text }</FormatText>
+            <Markdown>{ item.content.text }</Markdown>
         </>)
     },
 
