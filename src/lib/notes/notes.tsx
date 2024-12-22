@@ -58,6 +58,10 @@ export interface NotePlugin<ContentType> {
 
     /* validator to check new item before it is written into the db */
     validateContent: (item: ItemType<ContentType>|DBItem) => Promise<boolean>
+
+    /* finalize item before it is written into the db, after validation */
+    finalize?: (item: ItemType<ContentType>|DBItem) => typeof item | Promise<typeof item>
+
 }
 
 
@@ -157,6 +161,18 @@ class _Notes {
             return false
         }
         return this.plugins[item.type].validateContent(item)
+    }
+
+    async finalize(item: ItemType<any>|DBItem) : Promise<typeof item> {
+        if (!Object.hasOwn(this.plugins, item.type)) {
+            console.warn(`There is no plugin registered to handle items of type '${ item && item.type }'`)
+            return item
+        }
+        const plugin = this.plugins[item.type]
+        if (Object.hasOwn(plugin, "finalize")) {
+            return plugin.finalize!(item)
+        }
+        return item
     }
 }
 
