@@ -10,7 +10,14 @@ interface ContentType {
 }
 
 function FormatText({children, ...props}: {children: string} & PolymorphicComponentProps<"p", TextProps>) {
-    const sections = children.split("\n\n").map(sec => sec.trim()).filter((sec) => sec !== "")
+    const sections = children
+        .split("\n\n")  // split paragraphs
+        .map(sec => sec.trim())  // remove ...
+        .filter((sec) => sec !== "")  // ... empty lines
+        .map(sec =>
+            sec.split("\n")
+                .map(line =>
+                    <>{ line }<br /></>))  // replace newlines with <br />
 
     return (<>
         { sections.map((sec, n) => <MText key={n} {...props} style={{marginBottom: 20}}>{sec}</MText>) }
