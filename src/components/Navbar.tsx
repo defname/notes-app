@@ -1,4 +1,4 @@
-import { AppShell, Card, Group, Stack, Title } from "@mantine/core";
+import { AppShell, Card, Group, ScrollAreaAutosize, Stack, Title } from "@mantine/core";
 import Notes from "../lib/notes";
 import { TypeDescription } from "../lib/notes/notes";
 import { useAllItemsOfType } from "../hooks/data";
@@ -24,9 +24,10 @@ export default function Navbar() {
     const types = Notes.supportedTypes()
 
     return (<>
+    <ScrollAreaAutosize>
         {
             types.map(type => <NavbarSection key={type.id} type={type} />)
         }
-    </>)
+    </ScrollAreaAutosize></>)
 
 }
