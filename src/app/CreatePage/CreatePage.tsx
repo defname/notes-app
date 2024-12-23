@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import Note, { ItemType } from '../../lib/notes'
 import { NotesManager } from '../../lib/notes'
 import SaveButton from '../../components/SaveButton'
-import db, { DBItem } from '../../lib/db'
+import { DBItem } from '../../lib/db'
 import { notifications } from '@mantine/notifications'
 import { useItemIsValid } from '../../hooks/data'
 
