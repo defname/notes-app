@@ -38,6 +38,7 @@ export function useGraph(parentId?: string) {
                 node,
                 distance+1
             )).filter(child => child !== undefined)
+            node.distance = distance
 
             node.children.sort((a, b) =>  b.children.length - a.children.length)
 
@@ -51,7 +52,6 @@ export function useGraph(parentId?: string) {
     useEffect(() => {
         if (!parent) return
         setRoot(createGraph(parent, items, relations))
-        console.log(root)
     }, [parent, items, relations])
 
     function asList() : Node[] {
