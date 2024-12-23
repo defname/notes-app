@@ -1,14 +1,8 @@
-<<<<<<< HEAD
-import { AppShell, Card, Group, ScrollAreaAutosize, Stack, Title } from "@mantine/core";
-import Notes from "../lib/notes";
-import { TypeDescription } from "../lib/notes/notes";
-=======
-import { AppShell, Card, Group, Stack, Title } from "@mantine/core";
-import Note, { NotesManager } from "../lib/notes";
-import { TypeDescription } from "../lib/notes/notesmanager";
->>>>>>> 4-rebuild-notes-plugin-system
-import { useAllItemsOfType } from "../hooks/data";
-import { Link, useParams } from "react-router";
+import { AppShell, Card, Group, ScrollAreaAutosize, Stack, Title } from "@mantine/core"
+import Note, { NotesManager } from "../lib/notes"
+import { TypeDescription } from "../lib/notes/notesmanager"
+import { useAllItemsOfType } from "../hooks/data"
+import { Link, useParams } from "react-router"
 
 function NavbarSection({type}: {type: TypeDescription<any>}) {
     const { id } = useParams()
