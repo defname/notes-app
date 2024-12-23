@@ -32,7 +32,7 @@ export function useRelatedItems(id: string|undefined) {
 }
 
 export function useAllItems() {
-    const items = useLiveQuery(() => db.items.toArray(), [], [])
+    const items = useLiveQuery(() => db.items.orderBy("lastChange").reverse().toArray(), [], [])
     return items
 }
 
