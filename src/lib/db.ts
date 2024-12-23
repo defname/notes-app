@@ -13,10 +13,12 @@ interface Relations {
     item2: string
 }
 
-const db = new Dexie('NotesDB', {addons: [dexieCloud]}) as Dexie & {
+export type NotesDB = Dexie & {
   items: EntityTable<DBItem, 'id'>
   relations: EntityTable<Relations, 'id'>
 }
+
+const db = new Dexie('NotesDB', {addons: [dexieCloud]}) as NotesDB
 
 // Schema declaration:
 /*

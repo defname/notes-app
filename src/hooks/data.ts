@@ -1,6 +1,6 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import db from "../lib/db";
-import Notes, { ItemType } from "../lib/notes";
+import { NotesManager, ItemType } from "../lib/notes";
 import { useCallback, useEffect, useState } from "react";
 
 function queryItem(id: string|undefined) {
@@ -41,7 +41,7 @@ export function useItemIsValid(item: ItemType|undefined) {
 
     const validate = useCallback(async function () {
         setValid(false)
-        setValid(await Notes.validateContent(item))
+        setValid(await NotesManager.validateContent(item))
     }, [item])
 
     useEffect(() => {

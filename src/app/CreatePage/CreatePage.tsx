@@ -2,65 +2,13 @@
 import { useNavigate, useParams, useSearchParams } from 'react-router'
 import MainLayout from '../MainLayout'
 import { useEffect, useState } from 'react'
-import { ItemType } from '../../lib/notes'
-import Notes from '../../lib/notes'
+import Note, { ItemType } from '../../lib/notes'
+import { NotesManager } from '../../lib/notes'
 import SaveButton from '../../components/SaveButton'
 import db, { DBItem } from '../../lib/db'
 import { notifications } from '@mantine/notifications'
 import { useItemIsValid } from '../../hooks/data'
 
-
-async function checkForRelation(id1: string, id2: string): Promise<string|undefined> {
-  return db.relations.where("[item1+item2]").anyOf([[id1, id2], [id2, id1]]).toArray()
-    .then(relations => relations.length === 0 ? undefined : relations[0].id)
-}
-
-async function saveItemToDb(newItem: ItemType<any>|undefined, parentId: string|null, notify: (msg: string) => void): Promise<string>  {
-  if (!newItem) throw "Kein Item zum Speichern vorhanden."
-
-  /* validate the new item
-   * the plugin's RenderEditor method is in charge of showing hints what exactly
-   * is not ok */
-  if (!await Notes.validateContent(newItem)) {
-    throw "Die Angaben sind nicht vollständig oder nicht korrekt."
-  }
-
-  const newItemFinalized = await Notes.finalize(newItem)
-
-
-  /* Check if the returned item already exists (in this case it has an id) and if so
-   * just create a relation between the parent item and the returned item */
-  if (Object.hasOwn(newItemFinalized, "id") && (newItemFinalized as DBItem).id! !== undefined) {
-    console.log("Item already exists")
-    if (parentId === null) {
-      throw "Die Notiz existiert bereits."
-    }
-
-    if (parentId === (newItemFinalized as DBItem).id) {
-      throw "Eine Notiz kann nicht mit sich selbst verknüpft werden."
-    }
-    const existingItemId = (newItemFinalized as DBItem).id
-    if (await checkForRelation(parentId, existingItemId)) {
-      notify("Die Verbindung existiert bereits.")
-      return existingItemId
-    }
-    return db.relations.add({item1: existingItemId, item2: parentId})
-          .then(() => existingItemId)
-  }
-
-  /* If the item is actually a new one add it to the database and create a relation
-   * to the parent item, if a parent item is specified */
-  return db.items.add(newItemFinalized)
-    .then(newId => {
-      if (parentId !== null) {
-        return db.relations.add({item1: newId, item2: parentId})
-          .then(() => newId)
-      }
-      else {
-        return newId
-      }
-    })
-}
 
 export function CreatePage() {
 
@@ -73,20 +21,21 @@ export function CreatePage() {
 
   useEffect(() => {
     if (type === undefined) return
-    const typeDescr = Notes.getTypeDescription(type)
+    const typeDescr = NotesManager.getTypeDescription(type)
     if (typeDescr === undefined) return
     setNewItem({ type: type, content: typeDescr.defaultContent })
   }, [type])
 
   function saveButtonHandler() {
     if (newItem === undefined) return
-    const result = saveItemToDb(
-      newItem,
-      parentId,
-      (msg: string) => notifications.show({ title: "Hinweis", message: msg })
-    )
-    
-    result.then(newId => navigate(`/item/${newId}`))
+    const result = NotesManager.db.saveItem(newItem, parentId)
+
+    result.then(result => {
+      if (Object.hasOwn(newItem, "id") && result[0] === (newItem as DBItem).id && !result[1]) {
+        notifications.show({ title: "Hinweis", message: "Die Verbindung existiert bereits."})
+      }
+      navigate(`/item/${result[0]}`)
+    })
     .catch(err => {
       console.warn(err)
       notifications.show({ title: "Fehler", message: err })
@@ -96,7 +45,7 @@ export function CreatePage() {
 
   return (
     <MainLayout showFloatingButtons={false}>
-      <Notes.RenderEditor item={ newItem } onChange={(item: ItemType<any>) => item && setNewItem(item)} parentId={parentId} create />
+      <Note.Editor item={ newItem } onChange={(item: ItemType<any>) => item && setNewItem(item)} parentId={parentId} create />
       <SaveButton onClick={ saveButtonHandler } hidden={ !itemIsValid } />
     </MainLayout>
   )

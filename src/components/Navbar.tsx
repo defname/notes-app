@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 import { AppShell, Card, Group, ScrollAreaAutosize, Stack, Title } from "@mantine/core";
 import Notes from "../lib/notes";
 import { TypeDescription } from "../lib/notes/notes";
+=======
+import { AppShell, Card, Group, Stack, Title } from "@mantine/core";
+import Note, { NotesManager } from "../lib/notes";
+import { TypeDescription } from "../lib/notes/notesmanager";
+>>>>>>> 4-rebuild-notes-plugin-system
 import { useAllItemsOfType } from "../hooks/data";
 import { Link, useParams } from "react-router";
 
@@ -13,7 +19,7 @@ function NavbarSection({type}: {type: TypeDescription<any>}) {
             <Stack>
             <Title order={4}><Group><type.icon /> {type.text}</Group></Title>
             { 
-                items.map(item => <Link key={item.id} to={`/item/${item.id}`} className={`navbarlink ${item.id === id ? "selected" : ""}`}><Notes.RenderAsText item={item} /></Link>)
+                items.map(item => <Link key={item.id} to={`/item/${item.id}`} className={`navbarlink ${item.id === id ? "selected" : ""}`}><Note.Text item={item} /></Link>)
             }
             </Stack>
         </Card>
@@ -21,7 +27,7 @@ function NavbarSection({type}: {type: TypeDescription<any>}) {
 }
 
 export default function Navbar() {
-    const types = Notes.supportedTypes()
+    const types = NotesManager.supportedTypes()
 
     return (<>
     <ScrollAreaAutosize>

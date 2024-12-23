@@ -1,12 +1,12 @@
 import { useNavigate, useParams } from "react-router"
 import { useItem, useItemIsValid } from "../../hooks/data"
 import MainLayout from "../MainLayout"
-import Notes from "../../lib/notes"
+import { NotesManager } from "../../lib/notes"
 import { useEffect, useState } from "react"
-import db, { DBItem } from "../../lib/db"
+import { DBItem } from "../../lib/db"
 import SaveButton from "../../components/SaveButton"
 import { notifications } from "@mantine/notifications"
-
+import Note from "../../lib/notes"
 
 export function EditPage() {
     const { id } = useParams()
@@ -25,22 +25,15 @@ export function EditPage() {
 
     async function onSaveHandler() {
         if (!modifiedItem) return
-        if (!itemIsValid) {
-            notifications.show({ title: "Fehler", message: "Die Angaben sind nicht vollständig oder nicht korrekt." })
-            return
-        }
-        const finalizedItem = (await Notes.finalize(modifiedItem)) as DBItem
-        console.log(finalizedItem.id)
-        return db.items.update(finalizedItem.id, {"content": finalizedItem.content})
-            .then(() => navigate(`/item/${finalizedItem.id}`))
+        NotesManager.db.updateItem(modifiedItem)
+            .then(id => navigate(`/item/${id}`))
             .catch(err => notifications.show({ title: "Fehler", message: err }))
     }
     
     if (id === undefined) return
 
     return (<MainLayout showFloatingButtons={false}>
-        <Notes.RenderEditor item={ modifiedItem } onChange={(item: any) => item && onChangeHandler(item)} />
+        <Note.Editor item={ modifiedItem } onChange={(item: any) => item && onChangeHandler(item)} />
         <SaveButton onClick={ onSaveHandler } hidden={ !itemIsValid } />
     </MainLayout>)
-
 }
