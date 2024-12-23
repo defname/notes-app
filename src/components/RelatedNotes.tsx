@@ -15,6 +15,7 @@ interface NotesListProps {
 }
 
 export default function RelatedNotesList({ parentId }: NotesListProps) {
+    const [maxDistance, setMaxDistance] = useState<number>(1)
     const [filterOpts, setFilterOpts] = useState<FilterOpts>({ searchStr: "", filterTypes: [] })
     const [notes, setNotes] = useState<DBItem[]>([])
     const filteredNotes = useFilter(notes, filterOpts)
@@ -22,8 +23,8 @@ export default function RelatedNotesList({ parentId }: NotesListProps) {
     const [root, asList] = useGraph(parentId)
 
     useEffect(() => {
-        setNotes(asList().map(node => node.item))
-    }, [root])
+        setNotes(asList().filter(node => node.distance! <= maxDistance).map(node => node.item))
+    }, [root, maxDistance])
 
     function getRemoveRelationHandler(id: string) {
         if (!parentId) return () => undefined
@@ -40,7 +41,7 @@ export default function RelatedNotesList({ parentId }: NotesListProps) {
 
     return (<>
     <NotesTree root={ root } />
-    <SearchField value={filterOpts} onChange={setFilterOpts} />
+    <SearchField value={filterOpts} onChange={setFilterOpts} maxDistance={maxDistance} onMaxDistanceChange={setMaxDistance} />
     {
         filteredNotes.map(note => {
             return (
