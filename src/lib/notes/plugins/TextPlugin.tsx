@@ -15,7 +15,13 @@ interface ContentType {
 }
 
 function FormatText({ children, ...props }: { children: string } & PolymorphicComponentProps<"p", TextProps>) {
-    const sections = children.split("\n\n").map((sec) => sec.trim()).filter((sec) => sec !== "")
+    const sections = children.split("\n\n")
+        .map((sec) => sec.trim())
+        .filter((sec) => sec !== "")
+        .map(sec =>
+            sec.split("\n")
+                .map(line => <>{ line }<br /></>)
+        )
 
     return (
         <>
@@ -50,9 +56,9 @@ function RenderSmall({ item }: NotePluginProps<ContentType>) {
             <MText size="lg" fw="bold">
                 {item.content.title}
             </MText>
-            <Spoiler showLabel="mehr" hideLabel="weniger">
+            <div style={{maxHeight: 120, overflow: "hidden"}}>
                 <FormatText>{item.content.text}</FormatText>
-            </Spoiler>
+            </div>
         </>
     )
 }
