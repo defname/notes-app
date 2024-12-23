@@ -63,6 +63,8 @@ export interface NotePlugin<ContentType=any> {
     /* finalize item before it is written into the db, after validation */
     finalize?: (item: ItemType<ContentType>|DBItem) => typeof item | Promise<typeof item>
 
+    /* Props to hand up to the main layout on the display page */
+    bubbleUpProps?: Record<string, any>
 }
 
 class _NotesManager {
@@ -165,12 +167,21 @@ class _NotesManager {
         return plugin.finalize!(itemWithTime)
     }
 
+    /**
+     * Get a default (empty) item object to use on the create page.
+     * @param type The type for which the default object is needed
+     * @returns The default object for type
+     */
     getDefaultItem(type: string): ItemType {
         const plugin = this.getPluginForType(type)
         if (!plugin) {
             throw "No plugin for type"
         }
         return {content: plugin.forType.defaultContent, type: type, lastChange: Date.now() }
+    }
+
+    getBubbleUpProps(type: string): Record<string, any> {
+        return this.getPluginForType(type)?.bubbleUpProps || {}
     }
 }
 

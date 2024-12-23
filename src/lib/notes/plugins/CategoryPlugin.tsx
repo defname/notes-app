@@ -9,6 +9,7 @@ import { IconCategory } from "@tabler/icons-react"
 import { Autocomplete, FocusTrap, Text, TextInput, Title } from "@mantine/core"
 import db, { DBItem } from "../../db"
 import { useState } from "react"
+import RelatedNotesList from "../../../components/RelatedNotes"
 
 interface ContentType {
     title: string
@@ -30,7 +31,8 @@ const forType: TypeDescription<ContentType> =  {
 
 function Render({ item }: NotePluginProps<ContentType>) {
     return (<>
-        <Title order={2}><Text span size="smaller">Kategorie:</Text> { item.content.title }</Title>
+        <Title mb="xl" order={2}><Text span size="smaller">Kategorie:</Text> { item.content.title }</Title>
+        <RelatedNotesList parentId={(item as DBItem).id} />
     </>)
 }
 
@@ -111,6 +113,10 @@ async function validateContent(item: ItemType<ContentType>|DBItem|undefined) {
     return (duplicate === undefined || duplicate.id === (item as DBItem).id) && item.content.title !== ""
 }
 
+const bubbleUpProps: Record<string, any> = {
+    aside: undefined
+}
+
 const CategoryPlugin: NotePlugin<ContentType> = {
     forType,
     Render,
@@ -118,7 +124,8 @@ const CategoryPlugin: NotePlugin<ContentType> = {
     RenderAsText,
     RenderEditor,
     asSearchable,
-    validateContent
+    validateContent,
+    bubbleUpProps
 }
 
 export default CategoryPlugin

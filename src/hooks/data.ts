@@ -13,24 +13,6 @@ export function useItem(itemId: string|undefined) {
     return item
 }
 
-function queryRelatedItems(id: string|undefined) {
-    if (id === undefined) return []
-    return db.relations
-        .where("item1")
-        .equals(id)
-        .or("item2")
-        .equals(id)
-        .toArray()
-        .then(relations => relations.map(rel => rel.item1 === id ? rel.item2 : rel.item1))
-        .then(ids => db.items.bulkGet(ids))
-        .then(items => items.filter(item => item !== undefined))
-}
-
-export function useRelatedItems(id: string|undefined) {
-    const relItems = useLiveQuery(() => queryRelatedItems(id), [id], [])
-    return relItems
-}
-
 export function useAllItems() {
     const items = useLiveQuery(() => db.items.orderBy("lastChange").reverse().toArray(), [], [])
     return items

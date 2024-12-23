@@ -5,6 +5,7 @@ import { useItem } from "../../hooks/data"
 import { notifications } from "@mantine/notifications"
 import RelatedNotesList from "../../components/RelatedNotes"
 import Note, { NotesManager } from "../../lib/notes"
+import { useBubbleUpProps } from "../../hooks/layout"
 
 
 function Aside() {
@@ -20,6 +21,7 @@ export function DisplayPage() {
     const { id } = useParams()
     const item = useItem(id)
     const navigate = useNavigate()
+    const additionalProps = useBubbleUpProps(item)
     
     if (id === undefined) return
 
@@ -51,8 +53,7 @@ export function DisplayPage() {
 
 
     return (
-        <MainLayout aside={<Aside />} showFloatingButtons={ true } currentItem={ item } onDeleteClicked={ onDeleteClickedHandler } onEditClicked={ onEditClickedHandler }>
-            { item && new Date(item!.lastChange).toString()}
+        <MainLayout aside={<Aside />} showFloatingButtons={ true } currentItem={ item } onDeleteClicked={ onDeleteClickedHandler } onEditClicked={ onEditClickedHandler } {...additionalProps}>
             <Note item={item} />
         </MainLayout>
     )
