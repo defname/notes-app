@@ -1,3 +1,8 @@
+/**
+ * CategoryPlugin module to handle category-based notes.
+ * Provides rendering, editing, and validation functionalities for category notes.
+ */
+
 import type { NotePluginProps, NoteEditorPluginProps, ItemType, TypeDescription } from "../notesmanager"
 import { NotePlugin } from "../notesmanager"
 import { IconCategory } from "@tabler/icons-react"

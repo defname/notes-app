@@ -1,3 +1,8 @@
+/**
+ * ImagePlugin module to handle image-based notes.
+ * Provides rendering, editing, and validation functionalities for image notes.
+ */
+
 import type { NotePluginProps, NoteEditorPluginProps, ItemType, TypeDescription } from "../notesmanager"
 import { NotePlugin } from "../notesmanager"
 import { IconPhoto } from "@tabler/icons-react"
