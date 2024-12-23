@@ -1,3 +1,8 @@
+/**
+ * TextPlugin module to handle text-based notes.
+ * Provides rendering, editing, and validation functionalities for text notes.
+ */
+
 import type { NotePluginProps, NoteEditorPluginProps, ItemType, TypeDescription } from "../notesmanager"
 import { NotePlugin } from "../notesmanager"
 import { IconBlockquote } from "@tabler/icons-react"
@@ -9,20 +14,8 @@ interface ContentType {
     text: string
 }
 
-<<<<<<< HEAD
-function FormatText({children, ...props}: {children: string} & PolymorphicComponentProps<"p", TextProps>) {
-    const sections = children
-        .split("\n\n")  // split paragraphs
-        .map(sec => sec.trim())  // remove ...
-        .filter((sec) => sec !== "")  // ... empty lines
-        .map(sec =>
-            sec.split("\n")
-                .map(line =>
-                    <>{ line }<br /></>))  // replace newlines with <br />
-=======
 function FormatText({ children, ...props }: { children: string } & PolymorphicComponentProps<"p", TextProps>) {
     const sections = children.split("\n\n").map((sec) => sec.trim()).filter((sec) => sec !== "")
->>>>>>> 4-rebuild-notes-plugin-system
 
     return (
         <>
