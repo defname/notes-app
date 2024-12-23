@@ -26,10 +26,15 @@ db.version(1).stores({
   items: '@id, type, content', // primary key "id" (for the runtime!)
   relations: '@id, item1, item2'
 })
-*/
 
 db.version(3).stores({
   items: '@id, type, content', // primary key "id" (for the runtime!)
+  relations: '@id, item1, item2, [item1+item2]'
+})
+*/
+
+db.version(4).stores({
+  items: '@id, type, content, lastChange', // primary key "id" (for the runtime!)
   relations: '@id, item1, item2, [item1+item2]'
 })
 

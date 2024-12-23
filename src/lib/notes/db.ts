@@ -59,7 +59,7 @@ export class NotesDbWrapper {
             throw "Die Angaben sind nicht vollständig oder nicht korrekt."
         }
         const finalizedItem = (await this.nm.finalize(item)) as DBItem
-        return this.db.items.update(finalizedItem.id, {"content": finalizedItem.content})
+        return this.db.items.update(finalizedItem.id, {"content": finalizedItem.content, "lastChange": finalizedItem.lastChange})
             .then(() => finalizedItem.id)
     }
 

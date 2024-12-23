@@ -23,7 +23,10 @@ export function CreatePage() {
     if (type === undefined) return
     const typeDescr = NotesManager.getTypeDescription(type)
     if (typeDescr === undefined) return
-    setNewItem({ type: type, content: typeDescr.defaultContent })
+    const defItem = NotesManager.getDefaultItem(type)
+    if (defItem) {
+      setNewItem(defItem)
+    }
   }, [type])
 
   function saveButtonHandler() {

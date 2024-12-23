@@ -54,6 +54,7 @@ export function DisplayPage() {
 
     return (
         <MainLayout aside={<Aside />} showFloatingButtons={ true } currentItem={ item } onDeleteClicked={ onDeleteClickedHandler } onEditClicked={ onEditClickedHandler }>
+            { item && new Date(item!.lastChange).toString()}
             <Note item={item} />
         </MainLayout>
     )

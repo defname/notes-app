@@ -8,11 +8,13 @@ import React from "react"
 import { modules } from "./notes.config"
 import db, { DBItem } from "../db"
 import { NotesDbWrapper } from "./db"
+import { threadId } from "worker_threads"
 
 
 export interface ItemType<ContentType=any> {
     type: string
     content: ContentType
+    lastChange: number
 }
 
 export interface NotePluginProps<ContentType> {
@@ -154,11 +156,22 @@ class _NotesManager {
      * @returns A promise that resolves to the finalized item
      */
     async finalize(item: ItemType<any>|DBItem) : Promise<typeof item> {
+        console.log("FINALIZED", Date.now())
+        const itemWithTime: DBItem|ItemType<any> = {...item, lastChange: Date.now() }
+        console.log(new Date(itemWithTime.lastChange).toString())
         const plugin = this.getPluginFor(item)
         if (!plugin || !Object.hasOwn(plugin, "finalize")) {
-            return item
+            return itemWithTime
         }
-        return plugin.finalize!(item)
+        return plugin.finalize!(itemWithTime)
+    }
+
+    getDefaultItem(type: string): ItemType {
+        const plugin = this.getPluginForType(type)
+        if (!plugin) {
+            throw "No plugin for type"
+        }
+        return {content: plugin.forType.defaultContent, type: type, lastChange: Date.now() }
     }
 }
 
