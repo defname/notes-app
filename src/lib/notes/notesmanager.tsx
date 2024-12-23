@@ -8,7 +8,6 @@ import React from "react"
 import { modules } from "./notes.config"
 import db, { DBItem } from "../db"
 import { NotesDbWrapper } from "./db"
-import { threadId } from "worker_threads"
 
 
 export interface ItemType<ContentType=any> {

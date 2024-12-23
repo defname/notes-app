@@ -1,4 +1,4 @@
-import { AppShell, Card, Grid, Group, ScrollAreaAutosize, SimpleGrid, Stack, Title } from "@mantine/core"
+import { Card, Group, ScrollAreaAutosize, SimpleGrid, Stack, Title } from "@mantine/core"
 import Note, { NotesManager } from "../lib/notes"
 import { TypeDescription } from "../lib/notes/notesmanager"
 import { useAllItemsOfType } from "../hooks/data"
