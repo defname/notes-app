@@ -11,7 +11,7 @@ import { FilterOpts, useFilter } from "../hooks/filter"
 import SearchField from "./SearchField"
 
 interface NotesListProps {
-    parentId?: string
+    parentId: string|undefined
 }
 
 export default function RelatedNotesList({ parentId }: NotesListProps) {
