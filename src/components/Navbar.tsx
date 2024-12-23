@@ -1,4 +1,4 @@
-import { AppShell, Card, Group, ScrollAreaAutosize, Stack, Title } from "@mantine/core"
+import { AppShell, Card, Grid, Group, ScrollAreaAutosize, SimpleGrid, Stack, Title } from "@mantine/core"
 import Note, { NotesManager } from "../lib/notes"
 import { TypeDescription } from "../lib/notes/notesmanager"
 import { useAllItemsOfType } from "../hooks/data"
@@ -8,7 +8,7 @@ function NavbarSection({type}: {type: TypeDescription<any>}) {
     const { id } = useParams()
     const items = useAllItemsOfType(type.id)
 
-    return (<AppShell.Section my="lg">
+    return (
         <Card shadow="xs" padding="md" radius="md">
             <Stack>
             <Title order={4}><Group><type.icon /> {type.text}</Group></Title>
@@ -17,7 +17,7 @@ function NavbarSection({type}: {type: TypeDescription<any>}) {
             }
             </Stack>
         </Card>
-    </AppShell.Section>)
+    )
 }
 
 export default function Navbar() {
@@ -25,9 +25,11 @@ export default function Navbar() {
 
     return (<>
     <ScrollAreaAutosize>
+        <SimpleGrid cols={{base: 1, xs: 1, sm: 2, md: 1,  lg: 1, xl: 1}}>
         {
             types.map(type => <NavbarSection key={type.id} type={type} />)
         }
+        </SimpleGrid>
     </ScrollAreaAutosize></>)
 
 }
