@@ -1,5 +1,5 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import db from "../lib/db";
+import db, { DBItem } from "../lib/db";
 import { NotesManager, ItemType } from "../lib/notes";
 import { useCallback, useEffect, useState } from "react";
 
@@ -36,4 +36,20 @@ export function useItemIsValid(item: ItemType|undefined) {
 export function useAllItemsOfType(type: string|undefined) {
     const items = useLiveQuery(() => type ? db.items.where("type").equals(type).toArray() : [], [type], [])
     return items
+}
+
+export function useRelations(item: DBItem|undefined): string[] {
+    const ids = useLiveQuery(() =>
+        !item
+            ? []
+            : db.relations.where("item1").equals(item.id)
+                .or("item2").equals(item.id)
+                .toArray()
+                .then(relations =>
+                    relations.map(rel => rel.item1 === item.id ? rel.item2 : rel.item1)
+                ),
+        [item],
+        []
+    )
+    return ids
 }

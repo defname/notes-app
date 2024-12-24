@@ -60,7 +60,7 @@ export default function FloatingButtonGroup({ currentItem, onEditClicked, onDele
                     { addItemMenuVisible && <>
                         {
                             NotesManager.supportedTypes().map(type => (
-                                <ActionIcon onClick={ () => navigate(`/create/${type.id}${parentIdUrlStr}`)} key={type.id} variant="filled" size="input-md" radius="xl">
+                                <ActionIcon onClick={ () => navigate(currentItem ? `/add/${currentItem.id}/${type.id}` : `/create/${type.id}${parentIdUrlStr}`)} key={type.id} variant="filled" size="input-md" radius="xl">
                                     <type.icon style={{ width: '70%', height: '70%' }} stroke={1.5} />
                                 </ActionIcon>
                             ))

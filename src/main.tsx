@@ -15,6 +15,7 @@ import { Route } from 'react-router'
 import { CreatePage } from './app/CreatePage/CreatePage.tsx'
 import { DisplayPage } from './app/DisplayPage/DisplayPage.tsx'
 import { EditPage } from './app/editPage/EditPage.tsx'
+import { AddPage } from './app/AddPage/AddPage.tsx'
 
 
 
@@ -29,6 +30,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/create/:type" element={<CreatePage />} />
           <Route path="/item/:id" element={<DisplayPage />} />
           <Route path="/edit/:id" element={<EditPage />} />
+          <Route path="/add/:id/:type" element={<AddPage />} />
         </Routes>
       </BrowserRouter>
     </MantineProvider>

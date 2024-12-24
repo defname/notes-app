@@ -118,4 +118,17 @@ export class NotesDbWrapper {
             })
     }
 
+    /**
+     * Add a relation between items with id1 and id2. If the relation already exists
+     * return undefined.
+     * @param id1 Id of one item
+     * @param id2 Id of the other item
+     * @returns A Promise that resolves in the id of the relation or undefined if the
+     *          relation already exists
+     */
+    async addRelation(id1: string, id2: string): Promise<string|undefined> {
+        if (id1 === id2 || await this.checkForRelation(id1, id2)) return
+        return this.db.relations.add({item1: id1, item2: id2})
+    }
+
 }

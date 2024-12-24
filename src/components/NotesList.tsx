@@ -1,4 +1,4 @@
-import { Button, Center, Container, Paper } from "@mantine/core"
+import { Button, Center, Paper } from "@mantine/core"
 import { useNavigate } from "react-router"
 import Note from "../lib/notes"
 import { DBItem } from "../lib/db"
