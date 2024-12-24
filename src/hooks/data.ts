@@ -33,7 +33,7 @@ export function useItemIsValid(item: ItemType|undefined) {
     return valid
 }
 
-export function useAllItemsOfType(type: string) {
-    const items = useLiveQuery(() => db.items.where("type").equals(type).toArray(), [type], [])
+export function useAllItemsOfType(type: string|undefined) {
+    const items = useLiveQuery(() => type ? db.items.where("type").equals(type).toArray() : [], [type], [])
     return items
 }
