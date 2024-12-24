@@ -1,5 +1,4 @@
-import { ActionIcon, Paper } from "@mantine/core"
-import { Link } from "react-router"
+import { ActionIcon, Button, Center, Paper } from "@mantine/core"
 import Note, { NotesManager } from "../lib/notes"
 import { DBItem } from "../lib/db"
 import { useEffect, useState } from "react"
@@ -9,16 +8,19 @@ import { useGraph } from "../hooks/graph"
 import NotesTree from "./NotesTree"
 import { FilterOpts, useFilter } from "../hooks/filter"
 import SearchField from "./SearchField"
+import { useNavigate } from "react-router"
 
 interface NotesListProps {
     parentId: string|undefined
+    children?: (id: string) => JSX.Element
 }
 
-export default function RelatedNotesList({ parentId }: NotesListProps) {
+export default function RelatedNotesList({ parentId, children }: NotesListProps) {
     const [maxDistance, setMaxDistance] = useState<number>(1)
     const [filterOpts, setFilterOpts] = useState<FilterOpts>({ searchStr: "", filterTypes: [] })
     const [notes, setNotes] = useState<DBItem[]>([])
     const filteredNotes = useFilter(notes, filterOpts)
+    const navigate = useNavigate()
 
     const [root, asList] = useGraph(parentId)
 
@@ -52,7 +54,12 @@ export default function RelatedNotesList({ parentId }: NotesListProps) {
                         </ActionIcon>
                     }
                     <Note.Small item={ note } />
-                    <Link to={{pathname: `/item/${note.id}`}}>Zur Notiz</Link>
+                    <Center mt="md">
+                        { children 
+                            ? children(note.id)
+                            : <Button size="compact-sm" onClick={() => navigate(`/item/${note.id}`)}>Zur Notiz</Button>
+                        }
+                    </Center>
                 </Paper>
             )
         })
