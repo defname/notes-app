@@ -10,8 +10,8 @@ import AddMenu from "./AddMenu"
 
 interface FloatingButtonGroupProps {
     currentItem: DBItem|undefined
-    onEditClicked: () => void
-    onDeleteClicked: () => void
+    onEditClicked?: () => void
+    onDeleteClicked?: () => void
 }
 
 export function FloatingButtonGroup({ currentItem, onEditClicked, onDeleteClicked }: FloatingButtonGroupProps) {
@@ -36,7 +36,7 @@ export function FloatingButtonGroup({ currentItem, onEditClicked, onDeleteClicke
                 {
                     activeMenu === "context" &&
                     <>
-                        <DeleteButton onClick={onDeleteClicked} variant="filled" size="input-md" radius="xl" />
+                        <DeleteButton onClick={onDeleteClicked || (() => undefined)} variant="filled" size="input-md" radius="xl" />
 
                         <ActionIcon variant="filled" size="input-md" radius="xl" onClick={ onEditClicked }>
                             <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
