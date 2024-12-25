@@ -1,12 +1,13 @@
-import { ActionIcon, Affix, Stack } from "@mantine/core"
+import { ActionIcon, Affix, Group, SimpleGrid, Stack } from "@mantine/core"
 import { DBItem } from "../../lib/db"
-import { IconEdit } from "@tabler/icons-react"
-import { useState } from "react"
+import { Icon12Hours, IconDotsVertical, IconEdit, IconPlus, IconX } from "@tabler/icons-react"
+import { ComponentProps, ReactNode, useState } from "react"
 import { useClickOutside } from "@mantine/hooks"
 import { useNavigate } from "react-router"
 import MainButton, { ActiveMenu } from "./MainButton"
 import DeleteButton from "./DeleteButton"
 import AddMenu from "./AddMenu"
+import BubbleMenu, { BM } from "../BubbleMenu"
 
 interface FloatingButtonGroupProps {
     currentItem: DBItem|undefined
@@ -14,39 +15,43 @@ interface FloatingButtonGroupProps {
     onDeleteClicked?: () => void
 }
 
+
+
 export function FloatingButtonGroup({ currentItem, onEditClicked, onDeleteClicked }: FloatingButtonGroupProps) {
     const navigate = useNavigate()
-    const [activeMenu, setActiveMenu] = useState<ActiveMenu>()
-    const clickOutsideRef = useClickOutside(() => {
-        setActiveMenu(undefined)
-    })
 
-    return(<>
-        <Affix position={{ bottom: 20, right: 20 }}>
-            <Stack align="center" ref={clickOutsideRef}>
-                { activeMenu === "add" &&
-                    <AddMenu
-                        currentItem={currentItem}
-                        onEntryClick={ (type) => navigate(currentItem ? `/add/${currentItem.id}/${type.id}` : `/create/${type.id}`)}
-                        variant="filled"
-                        size="input-md"
-                        radius="xl"
-                        iconProps={{ style: { width: '70%', height: '70%' }, stroke: 1.5 }}/>
-                }
-                {
-                    activeMenu === "context" &&
-                    <>
-                        <DeleteButton onClick={onDeleteClicked || (() => undefined)} variant="filled" size="input-md" radius="xl" />
+    const iconProps = { style: { width: '70%', height: '70%' }, stroke: 1.5 }
+    const actionIconProps = { variant: "filled", radius: "xl", size: "input-md" }
+    const triggerIconProps = { ...actionIconProps, size: "input-xl" }
 
-                        <ActionIcon variant="filled" size="input-md" radius="xl" onClick={ onEditClicked }>
-                            <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
-                        </ActionIcon>
-                    </>
-                }
-                
-                <MainButton currentItem={ currentItem } activeMenu={ activeMenu } setActiveMenu={ setActiveMenu } />
-            </Stack>
-        </Affix>
-        
-    </>)
+    return <BubbleMenu position={{ bottom: 20, left: 20 }}>
+        <BM.Menu align="center">
+            <BM.Trigger { ...triggerIconProps }>
+                <IconDotsVertical { ...iconProps }/>
+            </BM.Trigger>
+        </BM.Menu>
+
+        <BM.Menu align="center">
+            <BM.Item component={ DeleteButton } onClick={ onDeleteClicked || (() => undefined) } { ...actionIconProps }>
+            </BM.Item>
+            <BM.Item onClick={ onEditClicked } { ...actionIconProps }>
+                <IconEdit { ...iconProps } />
+            </BM.Item>
+
+            <BM.Trigger { ...triggerIconProps}>
+                <IconPlus { ...iconProps } />
+            </BM.Trigger>
+        </BM.Menu>
+
+        <BM.Menu align="center">
+            <AddMenu
+                currentItem={ currentItem }
+                onEntryClick={ (type) => navigate(currentItem ? `/add/${currentItem.id}/${type.id}` : `/create/${type.id}`)}
+                { ...actionIconProps }
+                iconProps={ iconProps }/>
+            <BM.Trigger { ...triggerIconProps }>
+                <IconX { ...iconProps }/>
+            </BM.Trigger>
+        </BM.Menu>
+    </BubbleMenu>
 }
