@@ -1,4 +1,3 @@
-import { ActionIcon, ActionIconProps, PolymorphicComponentProps } from "@mantine/core"
 import { NotesManager } from "../../lib/notes"
 import { DBItem } from "../../lib/db"
 import React, { ComponentProps } from "react"
@@ -13,8 +12,6 @@ interface AddMenuProps {
 }
 
 function AddMenu({ currentItem, onEntryClick, children, iconProps, ...props }: AddMenuProps & ComponentProps<typeof BM.Item>) {
-
-   /* Code */
   return (<>
     {
       NotesManager.supportedTypes().map(type => (
