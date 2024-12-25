@@ -23,21 +23,26 @@ export function FloatingButtonGroup({ currentItem, onEditClicked, onDeleteClicke
     return <BubbleMenu position={{ bottom: 20, left: 20 }}>
         <BM.Menu align="center">
             <BM.Trigger { ...triggerIconProps }>
-                <IconDotsVertical { ...iconProps }/>
+                { currentItem
+                    ? <IconDotsVertical { ...iconProps }/>
+                    : <IconPlus { ...iconProps } />
+                }
             </BM.Trigger>
         </BM.Menu>
 
-        <BM.Menu align="center">
-            <BM.Item component={ DeleteButton } onClick={ onDeleteClicked || (() => undefined) } { ...actionIconProps }>
-            </BM.Item>
-            <BM.Item onClick={ onEditClicked } { ...actionIconProps }>
-                <IconEdit { ...iconProps } />
-            </BM.Item>
+        { currentItem &&
+            <BM.Menu align="center">
+                <BM.Item component={ DeleteButton } onClick={ onDeleteClicked || (() => undefined) } { ...actionIconProps }>
+                </BM.Item>
+                <BM.Item onClick={ onEditClicked } { ...actionIconProps }>
+                    <IconEdit { ...iconProps } />
+                </BM.Item>
 
-            <BM.Trigger { ...triggerIconProps}>
-                <IconPlus { ...iconProps } />
-            </BM.Trigger>
-        </BM.Menu>
+                <BM.Trigger { ...triggerIconProps}>
+                    <IconPlus { ...iconProps } />
+                </BM.Trigger>
+            </BM.Menu>
+        }
 
         <BM.Menu align="center">
             <AddMenu
