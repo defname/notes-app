@@ -1,4 +1,5 @@
-import { useNavigate, useParams } from "react-router"
+import { useParams } from "react-router"
+import { useNavigate } from "../../hooks/navigate"
 import { useItem, useItemIsValid } from "../../hooks/data"
 import MainLayout from "../MainLayout"
 import { NotesManager } from "../../lib/notes"

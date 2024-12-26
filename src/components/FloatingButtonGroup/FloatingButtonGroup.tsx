@@ -1,6 +1,6 @@
 import { DBItem } from "../../lib/db"
 import { IconDotsVertical, IconEdit, IconPlus, IconX } from "@tabler/icons-react"
-import { useNavigate } from "react-router"
+import { useNavigate } from "../../hooks/navigate"
 import DeleteButton from "./DeleteButton"
 import AddMenu from "./AddMenu"
 import BubbleMenu, { BM } from "../BubbleMenu"

@@ -1,5 +1,6 @@
 
-import { useNavigate, useParams, useSearchParams } from 'react-router'
+import { useParams, useSearchParams } from 'react-router'
+import { useNavigate } from '../../hooks/navigate'
 import MainLayout from '../MainLayout'
 import { useEffect, useState } from 'react'
 import Note, { ItemType } from '../../lib/notes'

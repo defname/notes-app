@@ -1,5 +1,5 @@
 import { Button, Center, Paper } from "@mantine/core"
-import { useNavigate } from "react-router"
+import { useNavigate } from "../hooks/navigate"
 import Note from "../lib/notes"
 import { DBItem } from "../lib/db"
 import { useState } from "react"

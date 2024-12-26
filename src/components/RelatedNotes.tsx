@@ -8,7 +8,7 @@ import { useGraph } from "../hooks/graph"
 import NotesTree from "./NotesTree"
 import { FilterOpts, useFilter } from "../hooks/filter"
 import SearchField from "./SearchField"
-import { useNavigate } from "react-router"
+import { useNavigate } from "../hooks/navigate"
 
 interface NotesListProps {
     parentId: string|undefined

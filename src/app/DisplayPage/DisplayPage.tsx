@@ -1,4 +1,5 @@
-import { useNavigate, useParams } from "react-router"
+import { useParams } from "react-router"
+import { useNavigate } from "../../hooks/navigate"
 import MainLayout from "../MainLayout"
 import { ScrollArea, Title } from "@mantine/core"
 import { useItem } from "../../hooks/data"
