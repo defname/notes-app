@@ -8,6 +8,7 @@ import { NotePlugin } from "../notesmanager"
 import { IconBlockquote } from "@tabler/icons-react"
 import { Text as MText, PolymorphicComponentProps, Space, Textarea, TextInput, TextProps, Title } from "@mantine/core"
 import Markdown from "react-markdown"
+import { Fragment } from "react/jsx-runtime"
 
 interface ContentType {
     title: string
@@ -18,9 +19,9 @@ function FormatText({ children, ...props }: { children: string } & PolymorphicCo
     const sections = children.split("\n\n")
         .map((sec) => sec.trim())
         .filter((sec) => sec !== "")
-        .map(sec =>
+        .map((sec) =>
             sec.split("\n")
-                .map(line => <>{ line }<br /></>)
+                .map(line => <Fragment key={Math.random()}>{ line }<br /></Fragment>)
         )
 
     return (
