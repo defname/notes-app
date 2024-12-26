@@ -20,7 +20,7 @@ export function FloatingButtonGroup({ currentItem, onEditClicked, onDeleteClicke
     const actionIconProps = { variant: "filled", radius: "xl", size: "input-md" }
     const triggerIconProps = { ...actionIconProps, size: "input-xl" }
 
-    return <BubbleMenu position={{ bottom: 20, left: 20 }}>
+    return <BubbleMenu position={{ bottom: 20, right: 20 }}>
         <BM.Menu align="center">
             <BM.Trigger { ...triggerIconProps }>
                 { currentItem
