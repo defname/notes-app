@@ -5,10 +5,9 @@
 
 import { type NotePluginProps, type ItemType, type TypeDescription, NotesManager } from "../notesmanager"
 import { IconListCheck } from "@tabler/icons-react"
-import { Box, Card, Checkbox, Group, Text, Title } from "@mantine/core"
+import { Checkbox, Group, Text, Title } from "@mantine/core"
 import { ContentType, ListItem } from "./ListPlugin.types"
 import { DBItem } from "../../db"
-import { ChangeEvent } from "react"
 import { replaceListItem } from "./ListPlugin.utils"
 
 
