@@ -180,6 +180,11 @@ class _NotesManager {
         return {content: plugin.forType.defaultContent, type: type, lastChange: Date.now() }
     }
 
+    /**
+     * Return plugin-specific props for the MainLayout component
+     * @param type The type of the item displayed
+     * @returns An object containing props for the MainLayout
+     */
     getBubbleUpProps(type: string): Record<string, any> {
         return this.getPluginForType(type)?.bubbleUpProps || {}
     }
