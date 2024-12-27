@@ -3,19 +3,19 @@ import { ItemType, NoteEditorPublicPluginProps, NotePluginProps, NotePublicPlugi
 import { Icon as IconType, IconProps, IconXxx } from "@tabler/icons-react"
 import { NotesManager } from "./notesmanager"
 
-function _fallback({ item }: NotePluginProps<any>) {
+function Fallback({ item }: NotePluginProps<any>) {
     console.warn(`There is no plugin registered to handle items of type '${ item && item.type }'`)
     return <>There is no plugin registered to handle items of type '{ item && item.type }'</>
 }
 
 function Note({ item, ...props }: NotePublicPluginProps<any>) {
     if (!item) return <Loader />
-    return NotesManager.getPluginFor(item)?.Render({item, ...props}) || _fallback({ item })
+    return NotesManager.getPluginFor(item)?.Render({item, ...props}) || Fallback({ item })
 }
 
 function Small({ item, ...props }: NotePublicPluginProps<any>) {
     if (!item) return <Loader />
-    return NotesManager.getPluginFor(item)?.RenderSmall({item, ...props}) || _fallback({ item })
+    return NotesManager.getPluginFor(item)?.RenderSmall({item, ...props}) || Fallback({ item })
 }
 
 function Text({ item, ...props }: NotePublicPluginProps<any>): string{
@@ -24,8 +24,13 @@ function Text({ item, ...props }: NotePublicPluginProps<any>): string{
 }
 
 function Editor({ item, onChange, create, ...props }: NoteEditorPublicPluginProps<any>) {
+    /* This workaround was done to prevent React from throwing an
+     * "Expected static flag was missing" error
+     */
+    const plugin = NotesManager.getPluginFor(item)
+    const Editor = plugin ? plugin.RenderEditor : Fallback
     if (!item) return <Loader />
-    return NotesManager.getPluginFor(item)?.RenderEditor({item, onChange,  create, ...props}) || _fallback({ item })
+    return <Editor { ...{item, onChange,  create, ...props} } /> 
 }
 
 function Icon({item, ...props}: {item: ItemType<any>|undefined} & IconProps & React.RefAttributes<IconType>) : JSX.Element {
