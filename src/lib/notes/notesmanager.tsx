@@ -157,9 +157,7 @@ class _NotesManager {
      * @returns A promise that resolves to the finalized item
      */
     async finalize(item: ItemType<any>|DBItem) : Promise<typeof item> {
-        console.log("FINALIZED", Date.now())
         const itemWithTime: DBItem|ItemType<any> = {...item, lastChange: Date.now() }
-        console.log(new Date(itemWithTime.lastChange).toString())
         const plugin = this.getPluginFor(item)
         if (!plugin || !Object.hasOwn(plugin, "finalize")) {
             return itemWithTime
