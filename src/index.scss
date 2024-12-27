@@ -83,6 +83,10 @@ button:focus-visible {
   --note-list-item-color-background: var(--mantine-color-gray-9)
 }
 
+:root {
+  --cards-background: var(--note-list-item-color-background)
+}
+
 
 a {
   color: var(--mantine-primary-color-light-color);
@@ -104,4 +108,8 @@ a:hover {
   .mantine-List-itemWrapper {
     align-items: flex-start;
   }
+}
+
+.content-box {
+  background: var(--cards-background)
 }

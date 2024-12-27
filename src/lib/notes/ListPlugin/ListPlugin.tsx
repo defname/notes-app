@@ -5,7 +5,7 @@
 
 import { type NotePluginProps, type ItemType, type TypeDescription, NotesManager } from "../notesmanager"
 import { IconListCheck } from "@tabler/icons-react"
-import { Checkbox, Text, Title } from "@mantine/core"
+import { Box, Card, Checkbox, Group, Text, Title } from "@mantine/core"
 import { ContentType, ListItem } from "./ListPlugin.types"
 import { DBItem } from "../../db"
 import { ChangeEvent } from "react"
@@ -21,7 +21,7 @@ export const forType: TypeDescription<ContentType> = {
 
 export function Render({ item }: NotePluginProps<ContentType>) {
     function getOnItemChangeHandler(listItem: ListItem, idx: number) {
-      return function (_: ChangeEvent<HTMLInputElement>) {
+      return function () {
         NotesManager.db.updateItem(
           replaceListItem(
             item,
@@ -38,7 +38,12 @@ export function Render({ item }: NotePluginProps<ContentType>) {
         <>
             <Title order={2}>{item.content.title}</Title>
             {
-              item.content.items.map((item, idx) => <Checkbox key={ idx } checked={ item.checked } onChange={ getOnItemChangeHandler(item, idx) } label={ item.text } />)
+              item.content.items.map((item, idx) => <Checkbox.Card p="sm" my="lg" key={ idx } checked={ item.checked } onClick={ getOnItemChangeHandler(item, idx) } className="content-box" radius="md">
+                <Group align="center" wrap="nowrap">
+                    <Checkbox.Indicator />
+                    <Text>{ item.text }</Text>
+                </Group>
+            </Checkbox.Card>)
             }
         </>
     )
