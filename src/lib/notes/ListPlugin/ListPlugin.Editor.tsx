@@ -8,7 +8,7 @@ import { IconSquare, IconSquareCheck, IconTrash } from "@tabler/icons-react"
 export function RenderEditor({ item, onChange }: NoteEditorPluginProps<ContentType>) {
 
   useEffect(() => {
-    if (item.content.items.length === 0) {
+    if (item.content.items.length === 0 || item.content.items.slice(-1)[0].text !== "") {
       addItem()
     }
   })
